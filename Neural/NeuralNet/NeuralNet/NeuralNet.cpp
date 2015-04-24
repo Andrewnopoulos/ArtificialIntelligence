@@ -1,11 +1,12 @@
 #include "NeuralNet.h"
+#include "utility.h"
 
 Neuron::Neuron(uint numInputs) : m_inputs(numInputs + 1)
 {
 	for (uint i = 0; i < numInputs + 1; ++i)
 	{
 		//randomly weight the inputs
-		m_vecWeight.push_back(rand() % 10);
+		m_vecWeight.push_back(RandomClamped()); // TODO put in random value
 	}
 }
 
@@ -119,7 +120,7 @@ vector<float> NeuralNet::Update(vector<float> &inputs)
 	int nWeight = 0;
 
 	// check we have correct # of inputs
-	if (inputs.size != m_NumInputs)
+	if (inputs.size() != m_NumInputs)
 	{
 		return outputs;
 	}
