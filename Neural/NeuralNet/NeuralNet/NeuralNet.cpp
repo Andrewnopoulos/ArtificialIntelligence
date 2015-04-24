@@ -6,7 +6,7 @@ Neuron::Neuron(uint numInputs) : m_inputs(numInputs + 1)
 	for (uint i = 0; i < numInputs + 1; ++i)
 	{
 		//randomly weight the inputs
-		m_vecWeight.push_back(RandomClamped()); // TODO put in random value
+		m_vecWeight.push_back(RandomClamped());
 	}
 }
 
@@ -150,10 +150,10 @@ vector<float> NeuralNet::Update(vector<float> &inputs)
 			}
 
 			// add in bias
-			netinput += m_vecLayers[i].m_vecNeurons[j].m_vecWeight[numInputs - 1] * 0; // bias (currently zero)
+			netinput += m_vecLayers[i].m_vecNeurons[j].m_vecWeight[numInputs - 1] * NODEBIAS; // bias (negative 1)
 
 			// store outputs from each layer as they're generated
-			outputs.push_back(Sigmoid(netinput, 0)); // activation response (currently zero)
+			outputs.push_back(Sigmoid(netinput, ACTIVATIONRESPONSE)); // activation response (currently 1)
 
 			nWeight = 0;
 
