@@ -79,9 +79,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NeuralNet.cpp" />
     <ClCompile Include="Tictactoe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="Tictactoe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
