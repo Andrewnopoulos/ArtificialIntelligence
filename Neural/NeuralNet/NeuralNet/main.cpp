@@ -96,9 +96,13 @@ void RunGenAlg()
 	{
 		cout << "You win!!" << endl;
 	}
-	else
+	else if (game->winnerIs() == -1)
 	{
 		cout << "You Lose!!!" << endl;
+	}
+	else
+	{
+		cout << "Draw!!" << endl;
 	}
 
 	delete game;
