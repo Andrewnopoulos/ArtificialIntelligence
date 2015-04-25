@@ -17,20 +17,15 @@ public:
 	~Tictactoe();
 	int winnerIs();
 	
-	inline uint getDimensions()
-	{
-		return m_dimensions;
-	}
+	inline uint getDimensions() const {	return m_dimensions; }
 
-	inline int* getBoard()
-	{
-		return m_board;
-	}
+	inline int* getBoard() const {return m_board;}
 
 	void printBoard();
 
 	// returns true if move successfully made
 	bool makeMove(uint posX, uint posY, int value);
+
 	void resetBoard(uint dimensions);
 
 };

@@ -9,6 +9,12 @@ const float MAXPERTURBATION = 0.3f;
 const float ACTIVATIONRESPONSE = 1.0f;
 const uint NUMCOPIESELITE = 1;
 const uint NUMELITE = 4;
+const uint DEFAULTSIZE = 3;
+const uint DEFAULTNODELAYERS = 1;
+const uint DEFAULTLAYERSIZE = 5;
+const float DEFAULTMUTATIONRATE = 0.1f;
+const float DEFAULTCROSSOVERRATE = 0.7f;
+const uint DEFAULTPOPULATIONSIZE = 30;
 
 
 //returns a random integer between x and y

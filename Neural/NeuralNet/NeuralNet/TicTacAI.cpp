@@ -31,6 +31,7 @@ uint TicTacAI::CalcMove(int* a_boardState, uint a_sizeOfBoard)
 		return a_sizeOfBoard;
 	}
 
+	// todo: determine how to turn output into a move
 	// return position of highest value
 
 	uint locationOfMax = 0;
@@ -48,5 +49,4 @@ uint TicTacAI::CalcMove(int* a_boardState, uint a_sizeOfBoard)
 
 	return locationOfMax;
 
-	// todo: determine how to turn output into a move
 }
