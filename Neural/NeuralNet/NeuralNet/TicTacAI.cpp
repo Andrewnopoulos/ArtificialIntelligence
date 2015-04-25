@@ -14,7 +14,6 @@ void TicTacAI::Reset()
 	m_fitness = 0;
 }
 
-
 uint TicTacAI::CalcMove(int* a_boardState, uint a_sizeOfBoard)
 {
 	vector<float> inputs;

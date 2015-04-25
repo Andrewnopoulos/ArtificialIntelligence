@@ -8,6 +8,11 @@ Tictactoe::Tictactoe(uint dimensions)
 
 bool Tictactoe::makeMove(uint xPos, uint yPos, int value)
 {
+	if (xPos >= m_dimensions || yPos >= m_dimensions)
+	{
+		return false;
+	}
+
 	if (m_board[xPos + m_dimensions * yPos] != 0)
 	{
 		return false;
@@ -15,6 +20,25 @@ bool Tictactoe::makeMove(uint xPos, uint yPos, int value)
 	else
 	{
 		m_board[xPos + m_dimensions * yPos] = value;
+		return true;
+	}
+}
+
+bool Tictactoe::makeMove(uint position, int value)
+{
+	if (position >= m_dimensions * m_dimensions)
+	{
+		return false;
+	}
+
+	if (m_board[position] != 0)
+	{
+		return false;
+	}
+	else
+	{
+		m_board[position] = value;
+		return true;
 	}
 }
 

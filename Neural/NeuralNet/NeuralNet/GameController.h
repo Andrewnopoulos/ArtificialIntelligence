@@ -32,13 +32,17 @@ private:
 
 	void Initialize(uint boardSize, uint layers, uint nodesPerLayer);
 
+	int PlayGame(TicTacAI& player1, TicTacAI& player2);
+
 public:
 
 	GameController();
 	GameController(uint popsize, uint boardSize, uint layers, uint nodesPerLayer);
 
+	TicTacAI GetBestAI();
+
 	~GameController();
 
-	bool Iterate();
+	void Iterate();
 
 };

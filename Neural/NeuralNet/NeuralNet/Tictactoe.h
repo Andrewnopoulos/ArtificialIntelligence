@@ -25,6 +25,7 @@ public:
 
 	// returns true if move successfully made
 	bool makeMove(uint posX, uint posY, int value);
+	bool makeMove(uint position, int value);
 
 	void resetBoard(uint dimensions);
 
