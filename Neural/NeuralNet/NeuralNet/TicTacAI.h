@@ -18,7 +18,8 @@ public:
 	TicTacAI(uint boardsize, uint layers, uint innerNodes);
 
 	// updates Neural net with info from game
-	bool Update(int* a_boardState, uint a_sizeOfBoard);
+	// chooses which move to take, return a number from 0 to board size - 1
+	uint CalcMove(int* a_boardState, uint a_sizeOfBoard);
 
 	void Reset();
 

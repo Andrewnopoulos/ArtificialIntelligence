@@ -1,29 +1,43 @@
-﻿Build started 24/4/2015 7:08:41 PM.
+﻿Build started 25/4/2015 4:04:30 PM.
      1>Project "X:\Workspace\AI\Neural\NeuralNet\NeuralNet\NeuralNet.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt NeuralNet.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GeneticAlg.cpp NeuralNet.cpp TicTacAI.cpp
+         TicTacAI.cpp
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\tictacai.cpp(22): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\tictacai.cpp(24): warning C4244: 'argument' : conversion from 'int' to 'const float', possible loss of data
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\tictacai.cpp(39): warning C4018: '<' : signed/unsigned mismatch
          NeuralNet.cpp
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(8): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(14): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(38): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(58): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(61): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(64): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(79): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(82): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(85): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(100): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(103): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(106): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(127): warning C4018: '<' : signed/unsigned mismatch
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(139): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(9): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(15): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(39): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(59): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(62): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(65): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(80): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(83): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(86): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(101): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(104): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(107): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(128): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\neuralnet.cpp(140): warning C4018: '<' : signed/unsigned mismatch
+         GeneticAlg.cpp
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\geneticalg.cpp(19): warning C4305: 'initializing' : truncation from 'int' to 'float'
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\geneticalg.cpp(27): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\geneticalg.cpp(42): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\geneticalg.cpp(51): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\geneticalg.cpp(98): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\geneticalg.cpp(183): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.lib" /MACHINE:X86 Debug\main.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.lib" /MACHINE:X86 Debug\GeneticAlg.obj
+         Debug\main.obj
          Debug\NeuralNet.obj
+         Debug\TicTacAI.obj
          Debug\Tictactoe.obj
          NeuralNet.vcxproj -> X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.exe
      1>Done Building Project "X:\Workspace\AI\Neural\NeuralNet\NeuralNet\NeuralNet.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.69
+Time Elapsed 00:00:03.30
