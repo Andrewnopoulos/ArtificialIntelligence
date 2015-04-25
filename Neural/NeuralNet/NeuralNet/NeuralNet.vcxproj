@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GeneticAlg.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNet.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="Tictactoe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameController.h" />
     <ClInclude Include="GeneticAlg.h" />
     <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="TicTacAI.h" />

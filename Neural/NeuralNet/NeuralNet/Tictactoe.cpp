@@ -45,8 +45,13 @@ bool Tictactoe::makeMove(uint position, int value)
 void Tictactoe::resetBoard(uint dimensions)
 {
 	m_dimensions = dimensions;
+	resetBoard();
+}
+
+void Tictactoe::resetBoard()
+{
 	m_board = new int[m_dimensions * m_dimensions];
-	memset(m_board, 0, sizeof(int) * dimensions * dimensions);
+	memset(m_board, 0, sizeof(int) * m_dimensions * m_dimensions);
 }
 
 Tictactoe::~Tictactoe()

@@ -12,6 +12,7 @@ Neuron::Neuron(uint numInputs) : m_inputs(numInputs + 1)
 
 NeuronLayer::NeuronLayer(uint a_neuronNumber, uint a_inputsPerNeuron)
 {
+	m_numNeurons = a_neuronNumber;
 	for (int i = 0; i < a_neuronNumber; ++i)
 	{
 		m_vecNeurons.push_back(Neuron(a_inputsPerNeuron));
@@ -56,7 +57,7 @@ vector<float> NeuralNet::GetWeights() const
 	vector<float> weights;
 
 	// for each layer
-	for (int i = 0; i < m_NumHiddenLayers; i++)
+	for (int i = 0; i < m_NumHiddenLayers + 1; i++)
 	{
 		// for each neuron
 		for (int j = 0; j < m_vecLayers[i].m_numNeurons; j++)
@@ -77,7 +78,7 @@ void NeuralNet::PutWeights(vector<float> &weights)
 	int cWeight = 0;
 
 	// for each layer
-	for (int i = 0; i < m_NumHiddenLayers; i++)
+	for (int i = 0; i < m_NumHiddenLayers + 1; i++)
 	{
 		// for each neuron
 		for (int j = 0; j < m_vecLayers[i].m_numNeurons; j++)
@@ -98,7 +99,7 @@ uint NeuralNet::GetNumberOfWeights() const
 	int weights = 0;
 
 	// for each layer
-	for (int i = 0; i < m_NumHiddenLayers; i++)
+	for (int i = 0; i < m_NumHiddenLayers+1; i++)
 	{
 		// for each neuron
 		for (int j = 0; j < m_vecLayers[i].m_numNeurons; j++)

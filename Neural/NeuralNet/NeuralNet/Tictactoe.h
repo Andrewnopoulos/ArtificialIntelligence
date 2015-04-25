@@ -28,5 +28,6 @@ public:
 	bool makeMove(uint position, int value);
 
 	void resetBoard(uint dimensions);
+	void resetBoard();
 
 };

@@ -3,7 +3,7 @@
 GameController::GameController()
 {
 	m_playerNumber = DEFAULTPOPULATIONSIZE;
-	Initialize(DEFAULTSIZE, DEFAULTNODELAYERS, DEFAULTLAYERSIZE);
+	Initialize(DEFAULTBOARDSIZE, DEFAULTNODELAYERS, DEFAULTLAYERSIZE);
 }
 
 GameController::GameController(uint popsize, uint boardSize, uint layers, uint nodesPerLayer)
@@ -32,6 +32,8 @@ void GameController::Initialize(uint boardSize, uint layers, uint nodesPerLayer)
 	{
 		m_players[i].PutWeights(m_population[i].m_vecWeights);
 	}
+
+	m_game = new Tictactoe(DEFAULTBOARDSIZE);
 }
 
 GameController::~GameController()
@@ -43,12 +45,15 @@ GameController::~GameController()
 // plays a game of tic tac toe and returns -1 if p1 wins, 1 if p2 wins
 int GameController::PlayGame(TicTacAI& player1, TicTacAI& player2)
 {
+	m_game->resetBoard();
+
 	int turn = -1;
 
 	while (!m_game->winnerIs())
 	{
 		int* boardstate = m_game->getBoard();
 		uint boardsize = m_game->getDimensions();
+		boardsize = boardsize * boardsize;
 		if (turn == -1)
 		{
 			if (m_game->makeMove(player1.CalcMove(boardstate, boardsize), turn))

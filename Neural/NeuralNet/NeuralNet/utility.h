@@ -9,9 +9,9 @@ const float MAXPERTURBATION = 0.3f;
 const float ACTIVATIONRESPONSE = 1.0f;
 const uint NUMCOPIESELITE = 1;
 const uint NUMELITE = 4;
-const uint DEFAULTSIZE = 3;
+const uint DEFAULTBOARDSIZE = 3;
 const uint DEFAULTNODELAYERS = 1;
-const uint DEFAULTLAYERSIZE = 5;
+const uint DEFAULTLAYERSIZE = 2;
 const float DEFAULTMUTATIONRATE = 0.1f;
 const float DEFAULTCROSSOVERRATE = 0.7f;
 const uint DEFAULTPOPULATIONSIZE = 30;
@@ -33,7 +33,6 @@ inline bool   RandBool()
 
 //returns a random float in the range -1 < n < 1
 inline double RandomClamped()	   { return RandFloat() - RandFloat(); }
-
 
 
 #endif

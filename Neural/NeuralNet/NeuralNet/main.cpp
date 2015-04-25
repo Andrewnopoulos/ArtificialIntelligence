@@ -41,9 +41,12 @@ void RunGenAlg()
 {
 	GameController* controller = new GameController();
 
+	cout << "Iterating " << endl;
+
 	for (int i = 0; i < 50; i++)
 	{
 		controller->Iterate();
+		cout << ".";
 	}
 
 	TicTacAI bestAI = controller->GetBestAI();
@@ -79,6 +82,7 @@ void RunGenAlg()
 		{
 			int* boardstate = game->getBoard();
 			uint boardsize = game->getDimensions();
+			boardsize *= boardsize;
 
 			if (game->makeMove(bestAI.CalcMove(boardstate, boardsize), turn))
 			{
@@ -99,6 +103,31 @@ void RunGenAlg()
 
 	delete game;
 
+}
+
+#include <assert.h>
+
+bool UnitTesting()
+{
+	Neuron n = Neuron(4);
+	assert(n.m_inputs = 4);
+
+	NeuronLayer layer = NeuronLayer(3, 3);
+	vector<Neuron> neuronsInLayer = layer.m_vecNeurons;
+	assert(neuronsInLayer.size() == 3);
+
+	cout << neuronsInLayer[0].m_inputs;
+	// require additional weight value for bias
+	assert(neuronsInLayer[0].m_inputs == 4);
+	assert(neuronsInLayer[1].m_inputs == 4);
+	assert(neuronsInLayer[2].m_inputs == 4);
+
+	// 4 inputs, 2 outputs, 3 hidden layers, 5 nodes per hidden layer
+	NeuralNet net = NeuralNet(4, 2, 3, 5);
+	cout << "number of weights in neural net: " << net.GetNumberOfWeights() << endl;
+	
+
+	return true;
 }
 
 int main()

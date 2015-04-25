@@ -39,7 +39,7 @@ uint TicTacAI::CalcMove(int* a_boardState, uint a_sizeOfBoard)
 	for (int i = 1; i < a_sizeOfBoard; i++)
 	{
 		// if new max is found, set it
-		if (outputs[i] > maxValue)
+		if (outputs[i] > maxValue && a_boardState[i] == 0)
 		{
 			locationOfMax = i;
 			maxValue = outputs[i];
