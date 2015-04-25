@@ -1,9 +1,10 @@
-﻿Build started 25/4/2015 8:32:22 PM.
+﻿Build started 26/4/2015 12:03:37 AM.
      1>Project "X:\Workspace\AI\Neural\NeuralNet\NeuralNet\NeuralNet.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GameController.cpp main.cpp
-         main.cpp
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\main.cpp(136): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GameController.cpp Tictactoe.cpp
+         Tictactoe.cpp
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\tictactoe.cpp(143): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\tictactoe.cpp(165): warning C4018: '<' : signed/unsigned mismatch
          GameController.cpp
      1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(17): warning C4018: '<' : signed/unsigned mismatch
      1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(31): warning C4018: '<' : signed/unsigned mismatch
@@ -24,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.07
+Time Elapsed 00:00:01.28

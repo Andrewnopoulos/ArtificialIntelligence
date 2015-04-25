@@ -140,7 +140,15 @@ int Tictactoe::winnerIs()
 		return diagWinner;
 	}
 
-	return 0;
+	for (int i = 0; i < m_dimensions * m_dimensions; i++)
+	{
+		if (m_board[i] == 0)
+		{
+			return 0;
+		}
+	}
+
+	return -2;
 }
 
 void Tictactoe::printBoard()

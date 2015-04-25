@@ -88,7 +88,7 @@ void GameController::Iterate()
 					m_players[i].Win();
 					m_players[j].Loss();
 				}
-				else
+				else if (winner = 1)
 				{
 					m_players[i].Loss();
 					m_players[j].Win();
