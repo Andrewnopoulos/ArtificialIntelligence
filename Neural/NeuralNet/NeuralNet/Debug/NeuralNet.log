@@ -1,9 +1,18 @@
-﻿Build started 26/4/2015 12:28:41 AM.
+﻿Build started 26/4/2015 12:25:37 PM.
      1>Project "X:\Workspace\AI\Neural\NeuralNet\NeuralNet\NeuralNet.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GameController.cpp TicTacAI.cpp main.cpp
+         GameController.cpp
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(17): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(31): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(79): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(81): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(111): warning C4018: '<' : signed/unsigned mismatch
+     1>x:\workspace\ai\neural\neuralnet\neuralnet\gamecontroller.cpp(123): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
+         Skipping... (no relevant changes detected)
          main.cpp
-     1>x:\workspace\ai\neural\neuralnet\neuralnet\main.cpp(140): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         TicTacAI.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"X:\Workspace\AI\Neural\NeuralNet\Debug\NeuralNet.lib" /MACHINE:X86 Debug\GameController.obj
          Debug\GeneticAlg.obj
@@ -16,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.65
+Time Elapsed 00:00:00.74
