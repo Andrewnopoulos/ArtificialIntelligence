@@ -15,6 +15,9 @@ private:
 	// player AI's
 	vector<TicTacAI> m_players;
 
+	// best AI from each generation
+	vector<TicTacAI> m_history;
+
 	// game to play
 	Tictactoe* m_game;
 
@@ -43,6 +46,12 @@ public:
 
 	~GameController();
 
-	void Iterate();
+	// plays all AI's against eachother to work out fitnesses
+	void Iterate(); 
+
+	// plays all AI's against previous best AI to work out fitnesses
+	void Iterate2();
+
+	vector<float> GetFitnessBests() { return m_fitnessBests; }
 
 };

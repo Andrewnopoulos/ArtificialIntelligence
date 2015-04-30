@@ -10,11 +10,12 @@ const float ACTIVATIONRESPONSE = 1.0f;
 const uint NUMCOPIESELITE = 1;
 const uint NUMELITE = 4;
 const uint DEFAULTBOARDSIZE = 3;
-const uint DEFAULTNODELAYERS = 20;
-const uint DEFAULTLAYERSIZE = 10;
-const float DEFAULTMUTATIONRATE = 0.1f;
+const uint DEFAULTNODELAYERS = 1;
+const uint DEFAULTLAYERSIZE = 4;
+const float DEFAULTMUTATIONRATE = 0.2f;
 const float DEFAULTCROSSOVERRATE = 0.7f;
-const uint DEFAULTPOPULATIONSIZE = 10;
+const uint DEFAULTPOPULATIONSIZE = 100;
+const uint DEFAULTITERATIONS = 50;
 
 
 //returns a random integer between x and y

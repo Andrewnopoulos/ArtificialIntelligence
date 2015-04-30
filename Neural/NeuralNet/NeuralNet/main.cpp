@@ -43,15 +43,69 @@ void RunGenAlg()
 
 	cout << "Iterating " << endl;
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < DEFAULTITERATIONS; i++)
 	{
-		controller->Iterate();
+		controller->Iterate2();
 		cout << ".";
+	}
+
+	vector<float> fitnessBests = controller->GetFitnessBests();
+
+	for (int i = 0; i < fitnessBests.size(); i++)
+	{
+		cout << "Generation " << i << " best fitness: " << fitnessBests[i] << endl;
 	}
 
 	TicTacAI bestAI = controller->GetBestAI();
 
-	Tictactoe* game = new Tictactoe(3);
+	uint bestwins = 0;
+	uint stoogewins = 0;
+
+	for (int k = 0; k < 1000; k++)
+	{
+		Tictactoe* testGame = new Tictactoe(DEFAULTBOARDSIZE);
+		TicTacAI stoogeAI = TicTacAI(DEFAULTBOARDSIZE, DEFAULTNODELAYERS, DEFAULTLAYERSIZE);
+
+		int testTurn = (RandBool() ? 1 : -1); // first turn is random
+
+		while (!testGame->winnerIs())
+		{
+			int* boardstate = testGame->getBoard();
+			uint boardsize = testGame->getDimensions();
+			boardsize *= boardsize;
+			if (testTurn == 1)
+			{
+				if (testGame->makeMove(bestAI.CalcMove(boardstate, boardsize), testTurn))
+				{
+					testTurn = -testTurn;
+				}
+			}
+			else if (testTurn == -1)
+			{
+				if (testGame->makeMove(stoogeAI.CalcMove(boardstate, boardsize), testTurn))
+				{
+					testTurn = -testTurn;
+				}
+			}
+		}
+		if (testGame->winnerIs() > 0)
+		{
+			bestwins++;
+		}
+		else if (testGame->winnerIs() < 0)
+		{
+			stoogewins++;
+		}
+
+	//	testGame->printBoard();
+		delete testGame;
+
+	}
+
+	cout << endl << "Best AI wins: " << bestwins << endl;
+	cout << "Random AI wins: " << stoogewins << endl;
+
+	Tictactoe* game = new Tictactoe(DEFAULTBOARDSIZE);
 	int turn = 1;
 
 	while (!game->winnerIs())
@@ -104,6 +158,8 @@ void RunGenAlg()
 	{
 		cout << "Draw!!" << endl;
 	}
+
+	cin >> turn;
 
 	delete game;
 

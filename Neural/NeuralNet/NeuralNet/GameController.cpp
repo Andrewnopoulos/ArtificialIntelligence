@@ -34,6 +34,8 @@ void GameController::Initialize(uint boardSize, uint layers, uint nodesPerLayer)
 	}
 
 	m_game = new Tictactoe(DEFAULTBOARDSIZE);
+
+	m_history.push_back(TicTacAI(boardSize, layers, nodesPerLayer));
 }
 
 GameController::~GameController()
@@ -88,24 +90,19 @@ void GameController::Iterate()
 			{
 				int winner = PlayGame(m_players[i], m_players[j]);
 
-				//if (winner > 0)
-				//{
-				//	m_players[j].Win(9 - abs(winner));
-				//}
-				//else if (winner < 0)
-				//{
-				//	m_players[i].Win(9 - abs(winner));
-				//}
-
 				if (winner < 0)
 				{
-					m_players[i].Win(18 - abs(winner));
-					m_players[j].Lose(18 - abs(winner));
+					m_players[i].Win();
+					m_players[j].Loss();
+				//	m_players[i].Win(18 - abs(winner));
+				//	m_players[j].Lose(18);
 				}
 				else if (winner > 0)
 				{
-					m_players[j].Win(18 - abs(winner));
-					m_players[i].Lose(18 - abs(winner));
+					m_players[j].Win();
+					m_players[i].Loss();
+				//	m_players[j].Win(18 - abs(winner));
+				//	m_players[i].Lose(18);
 				}
 				m_population[i].m_fitness = m_players[i].GetFitness();
 				m_population[j].m_fitness = m_players[j].GetFitness();
@@ -129,6 +126,61 @@ void GameController::Iterate()
 	}
 }
 
+void GameController::Iterate2()
+{
+	for (int i = 0; i < m_playerNumber; i++)
+	{
+		for (int j = 0; j < m_generations; j++)
+		{
+			if (RandBool())
+			{
+				int winner = PlayGame(m_players[i], m_history[j]);
+
+				if (winner < 0)
+				{
+					m_players[i].Win();
+				}
+				else
+				{
+					m_players[i].Loss();
+				}
+			}
+			else
+			{
+				int winner = PlayGame(m_history[j], m_players[i]);
+
+				if (winner > 0)
+				{
+					m_players[i].Win();
+				}
+				else
+				{
+					m_players[i].Loss();
+				}
+			}
+		}
+		m_population[i].m_fitness = m_players[i].GetFitness();
+	}
+
+	// run through genetic algorithm
+	m_fitnessAverages.push_back(m_geneticAlg->AverageFitness());
+	m_fitnessBests.push_back(m_geneticAlg->BestFitness());
+
+	m_generations++;
+
+	m_history.push_back(GetBestAI());
+
+	m_population = m_geneticAlg->Epoch(m_population);
+
+	// insert improved brains into AI's
+	for (int i = 0; i < m_playerNumber; i++)
+	{
+		m_players[i].PutWeights(m_population[i].m_vecWeights);
+		m_players[i].Reset();
+	}
+
+}
+
 TicTacAI GameController::GetBestAI()
 {
 	float bestFitness = 0;
@@ -142,6 +194,5 @@ TicTacAI GameController::GetBestAI()
 			bestIndex = i;
 		}
 	}
-
 	return m_players[bestIndex];
 }
