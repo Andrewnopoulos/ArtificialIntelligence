@@ -54,4 +54,6 @@ public:
 
 	vector<float> GetFitnessBests() { return m_fitnessBests; }
 
+	vector<float> GetFitnessAverages() { return m_fitnessAverages; }
+
 };

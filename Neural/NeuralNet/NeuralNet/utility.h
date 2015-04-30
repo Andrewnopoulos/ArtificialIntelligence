@@ -14,8 +14,8 @@ const uint DEFAULTNODELAYERS = 1;
 const uint DEFAULTLAYERSIZE = 4;
 const float DEFAULTMUTATIONRATE = 0.2f;
 const float DEFAULTCROSSOVERRATE = 0.7f;
-const uint DEFAULTPOPULATIONSIZE = 100;
-const uint DEFAULTITERATIONS = 50;
+const uint DEFAULTPOPULATIONSIZE = 30;
+const uint DEFAULTITERATIONS = 1000;
 
 
 //returns a random integer between x and y

@@ -120,6 +120,7 @@ int Tictactoe::checkDiags()
 	return 0;
 }
 
+// return 0 if unfinished, 1 if player1 wins, -1 if player 2 wins, -2 if draw
 int Tictactoe::winnerIs()
 {
 	int colWinner = checkCols();

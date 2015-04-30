@@ -1,9 +1,34 @@
 #include "Tictactoe.h"
 #include "GameController.h"
 #include <iostream>
+#include <fstream>
 #include <time.h>
 
 using namespace std;
+
+//unsigned char* FileToBuffer(const char* a_Name)
+//{
+//	// open file for text reading
+//	FILE* pFile = fopen(a_Name, "rb");
+//	if (pFile == nullptr)
+//	{
+//		printf("Error: unable to open file '%s' for reading!\n", a_Name);
+//		return nullptr;
+//	}
+//
+//	// get number of bytes in file
+//	fseek(pFile, 0, SEEK_END);
+//	unsigned int fileLength = (unsigned int)ftell(pFile);
+//	fseek(pFile, 0, SEEK_SET);
+//
+//	// allocate buffer and read file contents
+//	unsigned char* buffer = new unsigned char[fileLength + 1];
+//	memset(buffer, 0, fileLength + 1);
+//	fread(buffer, sizeof(unsigned char), fileLength, pFile);
+//
+//	fclose(pFile);
+//	return buffer;
+//}
 
 void RunMultiplayer()
 {
@@ -50,18 +75,20 @@ void RunGenAlg()
 	}
 
 	vector<float> fitnessBests = controller->GetFitnessBests();
+	vector<float> fitnessAverages = controller->GetFitnessAverages();
 
-	for (int i = 0; i < fitnessBests.size(); i++)
+	for (int i = 0; i < fitnessAverages.size(); i++)
 	{
-		cout << "Generation " << i << " best fitness: " << fitnessBests[i] << endl;
+		cout << "Generation " << i << " average fitness: " << fitnessAverages[i] << endl;
 	}
 
 	TicTacAI bestAI = controller->GetBestAI();
 
 	uint bestwins = 0;
 	uint stoogewins = 0;
+	uint draws = 0;
 
-	for (int k = 0; k < 1000; k++)
+	for (int k = 0; k < 10000; k++)
 	{
 		Tictactoe* testGame = new Tictactoe(DEFAULTBOARDSIZE);
 		TicTacAI stoogeAI = TicTacAI(DEFAULTBOARDSIZE, DEFAULTNODELAYERS, DEFAULTLAYERSIZE);
@@ -88,13 +115,19 @@ void RunGenAlg()
 				}
 			}
 		}
-		if (testGame->winnerIs() > 0)
+
+		int winner = testGame->winnerIs();
+		if (winner == 1)
 		{
 			bestwins++;
 		}
-		else if (testGame->winnerIs() < 0)
+		else if (winner == -1)
 		{
 			stoogewins++;
+		}
+		else if (winner == -2)
+		{
+			draws++;
 		}
 
 	//	testGame->printBoard();
@@ -104,64 +137,72 @@ void RunGenAlg()
 
 	cout << endl << "Best AI wins: " << bestwins << endl;
 	cout << "Random AI wins: " << stoogewins << endl;
+	cout << "Draws: " << draws << endl;
 
-	Tictactoe* game = new Tictactoe(DEFAULTBOARDSIZE);
-	int turn = 1;
+	std::ofstream myfile;
+	myfile.open("potato.csv", std::ios_base::app);
+	myfile << "\nBestwins " << bestwins << "\n";
+	myfile << "Stoogewins " << stoogewins << "\n";
+	myfile << "Draws " << draws;
+	myfile.close();
 
-	while (!game->winnerIs())
-	{
-		if (turn == 1)
-		{
-			uint xpos = 0;
-			uint ypos = 0;
+	//Tictactoe* game = new Tictactoe(DEFAULTBOARDSIZE);
+	//int turn = 1;
 
-			cout << "Take your turn, mortal" << endl;
+	//while (!game->winnerIs())
+	//{
+	//	if (turn == 1)
+	//	{
+	//		uint xpos = 0;
+	//		uint ypos = 0;
 
-			cout << "x position:" << endl;
-			cin >> xpos;
-			cout << "y position:" << endl;
-			cin >> ypos;
+	//		cout << "Take your turn, mortal" << endl;
 
-			// if move successfully made, swap turns
-			if (game->makeMove(ypos, xpos, turn))
-			{
-				turn = -turn;
-			}
-			else
-			{
-				cout << "Incompatible move" << endl;
-			}
-		}
-		else
-		{
-			int* boardstate = game->getBoard();
-			uint boardsize = game->getDimensions();
-			boardsize *= boardsize;
+	//		cout << "x position:" << endl;
+	//		cin >> xpos;
+	//		cout << "y position:" << endl;
+	//		cin >> ypos;
 
-			if (game->makeMove(bestAI.CalcMove(boardstate, boardsize), turn))
-			{
-				turn = -turn;
-				game->printBoard();
-			}
-		}
-	}
+	//		// if move successfully made, swap turns
+	//		if (game->makeMove(ypos, xpos, turn))
+	//		{
+	//			turn = -turn;
+	//		}
+	//		else
+	//		{
+	//			cout << "Incompatible move" << endl;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		int* boardstate = game->getBoard();
+	//		uint boardsize = game->getDimensions();
+	//		boardsize *= boardsize;
 
-	if (game->winnerIs() == 1)
-	{
-		cout << "You win!!" << endl;
-	}
-	else if (game->winnerIs() == -1)
-	{
-		cout << "You Lose!!!" << endl;
-	}
-	else
-	{
-		cout << "Draw!!" << endl;
-	}
+	//		if (game->makeMove(bestAI.CalcMove(boardstate, boardsize), turn))
+	//		{
+	//			turn = -turn;
+	//			game->printBoard();
+	//		}
+	//	}
+	//}
 
-	cin >> turn;
+	//if (game->winnerIs() == 1)
+	//{
+	//	cout << "You win!!" << endl;
+	//}
+	//else if (game->winnerIs() == -1)
+	//{
+	//	cout << "You Lose!!!" << endl;
+	//}
+	//else
+	//{
+	//	cout << "Draw!!" << endl;
+	//}
 
-	delete game;
+	//cin >> turn;
+
+	//delete game;
 
 }
 

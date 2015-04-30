@@ -75,6 +75,13 @@ int GameController::PlayGame(TicTacAI& player1, TicTacAI& player2)
 			}
 		}
 	}
+	int winner = m_game->winnerIs();
+	
+	// draw
+	if (winner == -2)
+	{
+		return 0;
+	}
 
 	return numOfTurns * m_game->winnerIs();
 }
@@ -130,7 +137,7 @@ void GameController::Iterate2()
 {
 	for (int i = 0; i < m_playerNumber; i++)
 	{
-		for (int j = 0; j < m_generations; j++)
+		for (int j = 0; j < m_history.size(); j++)
 		{
 			if (RandBool())
 			{
@@ -140,7 +147,7 @@ void GameController::Iterate2()
 				{
 					m_players[i].Win();
 				}
-				else
+				else if (winner > 0)
 				{
 					m_players[i].Loss();
 				}
@@ -153,7 +160,7 @@ void GameController::Iterate2()
 				{
 					m_players[i].Win();
 				}
-				else
+				else if (winner < 0)
 				{
 					m_players[i].Loss();
 				}
@@ -168,7 +175,31 @@ void GameController::Iterate2()
 
 	m_generations++;
 
-	m_history.push_back(GetBestAI());
+	// caps maximum size of history vector to 50, replacing worst ones with better ones (hopefully)
+	if (m_history.size() >= 50)
+	{
+		float worstFitness = 99999;
+		uint worstIndex = 0;
+
+		// determine least fittest in history
+		for (int i = 0; i < m_history.size(); i++)
+		{
+			if (m_history[i].GetFitness() < worstFitness)
+			{
+				worstIndex = i;
+				worstFitness = m_history[i].GetFitness();
+			}
+		}
+		if (GetBestAI().GetFitness() > worstFitness)
+		{
+			m_history[worstFitness] = GetBestAI();
+		}
+	}
+	else
+	{
+		m_history.push_back(GetBestAI());
+	}
+	
 
 	m_population = m_geneticAlg->Epoch(m_population);
 

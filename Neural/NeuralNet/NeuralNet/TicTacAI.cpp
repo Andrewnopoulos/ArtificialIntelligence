@@ -14,8 +14,6 @@ void TicTacAI::Reset()
 	m_fitness = 0;
 }
 
-#include <iostream>
-
 uint TicTacAI::CalcMove(int* a_boardState, uint a_sizeOfBoard)
 {
 	vector<float> inputs;
@@ -39,7 +37,6 @@ uint TicTacAI::CalcMove(int* a_boardState, uint a_sizeOfBoard)
 
 	uint locationOfMax = 0;
 	float maxValue = 0;
-
 
 	for (int i = 0; i < a_sizeOfBoard; i++)
 	{
