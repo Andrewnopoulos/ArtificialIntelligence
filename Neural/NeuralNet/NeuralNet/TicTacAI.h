@@ -1,5 +1,6 @@
 #pragma once
 #include "NeuralNet.h"
+#include <algorithm>
 
 class TicTacAI
 {
@@ -25,9 +26,11 @@ public:
 
 	// accessors
 	inline int GetTeam() const { return m_team; }
-	inline float GetFitness() const { return m_fitness; }
+	inline float GetFitness() const { return std::max(m_fitness, 0.0f); }
 	int GetNumberOfWeights() const { return m_brain.GetNumberOfWeights(); }
 
+	void Win(int fitnessChange) { m_fitness += fitnessChange; }
+	void Lose(int fitnessChange) { m_fitness -= fitnessChange; }
 	void Win() { m_fitness++; }
 	void Loss() { m_fitness--; }
 	void PutWeights(vector<float> &w) { m_brain.PutWeights(w); }

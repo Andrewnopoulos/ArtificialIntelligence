@@ -49,8 +49,12 @@ int GameController::PlayGame(TicTacAI& player1, TicTacAI& player2)
 
 	int turn = -1;
 
+	int numOfTurns = 0;
+
 	while (!m_game->winnerIs())
 	{
+		numOfTurns++;
+
 		int* boardstate = m_game->getBoard();
 		uint boardsize = m_game->getDimensions();
 		boardsize = boardsize * boardsize;
@@ -70,7 +74,7 @@ int GameController::PlayGame(TicTacAI& player1, TicTacAI& player2)
 		}
 	}
 
-	return m_game->winnerIs();
+	return numOfTurns * m_game->winnerIs();
 }
 
 void GameController::Iterate()
@@ -83,15 +87,25 @@ void GameController::Iterate()
 			if (!(i == j))
 			{
 				int winner = PlayGame(m_players[i], m_players[j]);
-				if (winner == -1)
+
+				//if (winner > 0)
+				//{
+				//	m_players[j].Win(9 - abs(winner));
+				//}
+				//else if (winner < 0)
+				//{
+				//	m_players[i].Win(9 - abs(winner));
+				//}
+
+				if (winner < 0)
 				{
-					m_players[i].Win();
-					m_players[j].Loss();
+					m_players[i].Win(18 - abs(winner));
+					m_players[j].Lose(18 - abs(winner));
 				}
-				else if (winner = 1)
+				else if (winner > 0)
 				{
-					m_players[i].Loss();
-					m_players[j].Win();
+					m_players[j].Win(18 - abs(winner));
+					m_players[i].Lose(18 - abs(winner));
 				}
 				m_population[i].m_fitness = m_players[i].GetFitness();
 				m_population[j].m_fitness = m_players[j].GetFitness();

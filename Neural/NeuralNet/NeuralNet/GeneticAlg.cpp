@@ -1,5 +1,7 @@
 #include "GeneticAlg.h"
 #include "utility.h"
+
+#include <assert.h>
 #include <algorithm>
 
 GeneticAlg::GeneticAlg(uint a_popSize,
@@ -24,7 +26,7 @@ GeneticAlg::GeneticAlg(uint a_popSize,
 		m_vecPop.push_back(Genome());
 		for (uint j = 0; j < m_chomoSize; ++j)
 		{
-			m_vecPop[i].m_vecWeights.push_back(RandomClamped());
+			m_vecPop[i].m_vecWeights.push_back(RandFloat());
 		}
 	}
 }
@@ -67,6 +69,9 @@ Genome GeneticAlg::GetChromoRoulette()
 			break;
 		}
 	}
+
+	assert(ChosenOne.m_vecWeights.size() > 0);
+
 	return ChosenOne;
 }
 
@@ -144,6 +149,9 @@ vector<Genome> GeneticAlg::Epoch(vector<Genome> &old_pop)
 		// mutate
 		Mutate(baby1);
 		Mutate(baby2);
+
+		int s1 = baby1.size();
+		int s2 = baby2.size();
 
 		// copy into new population
 		OutputPop.push_back(Genome(baby1, 0));
