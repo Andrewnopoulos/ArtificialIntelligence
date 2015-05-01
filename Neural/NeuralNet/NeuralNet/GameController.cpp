@@ -176,7 +176,7 @@ void GameController::Iterate2()
 	m_generations++;
 
 	// caps maximum size of history vector to 50, replacing worst ones with better ones (hopefully)
-	if (m_history.size() >= 50)
+	if (m_history.size() >= 20)
 	{
 		float worstFitness = 99999;
 		uint worstIndex = 0;
