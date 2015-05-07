@@ -4,6 +4,8 @@
 #include <fstream>
 #include <time.h>
 
+#include "Checkers.h"
+
 using namespace std;
 
 //unsigned char* FileToBuffer(const char* a_Name)
@@ -231,12 +233,33 @@ bool UnitTesting()
 	return true;
 }
 
+
+bool CheckersTesting()
+{
+
+	Checkers m_checkersGame;
+
+	m_checkersGame.SetPosition(WHITE, 0, 0);
+	//m_checkersGame.SetPosition(WHITE, 2, 0);
+	//m_checkersGame.SetPosition(WHITE, 4, 0);
+	//m_checkersGame.SetPosition(WHITE, 6, 0);
+
+	//m_checkersGame.SetPosition(BLACK, 1, 7);
+	//m_checkersGame.SetPosition(BLACK, 3, 7);
+	//m_checkersGame.SetPosition(BLACK, 5, 7);
+	//m_checkersGame.SetPosition(BLACK, 7, 7);
+
+	m_checkersGame.DrawBoard();
+
+	return true;
+}
+
 int main()
 {
 
 	srand(time(NULL));
 
-	RunGenAlg();
+	CheckersTesting();
 
 	return 0;
 }
