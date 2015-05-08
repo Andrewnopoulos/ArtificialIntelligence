@@ -18,7 +18,6 @@ Checkers::Checkers()
 
 bool Checkers::SetPosition(Colour inputColour, uint xPos, uint yPos)
 {
-
 	int index = 8 * yPos + xPos;
 
 	int boardLocation = boardIndices[index];
@@ -28,7 +27,7 @@ bool Checkers::SetPosition(Colour inputColour, uint xPos, uint yPos)
 		return false;
 	}
 
-	long long offset = (1 << boardLocation);
+	long long offset = (1LL << boardLocation);
 
 	if (inputColour == Colour::WHITE)
 	{
@@ -53,7 +52,7 @@ Colour Checkers::GetPosition(uint xPos, uint yPos)
 		return FREEWHITE;
 	}
 
-	long long offset = (1 << boardLocation);
+	long long offset = (1LL << boardLocation);
 
 	if (m_board.m_WhitePieces & offset)
 	{
@@ -74,7 +73,7 @@ void Checkers::DrawBoard()
 {
 	for (int y = 7; y >= 0; y--)
 	{
-		for (int x = 7; x >= 0; x--)
+		for (int x = 0; x < 8; x++)
 		{
 			Colour drawOutput = GetPosition(x, y);
 			switch (drawOutput)
