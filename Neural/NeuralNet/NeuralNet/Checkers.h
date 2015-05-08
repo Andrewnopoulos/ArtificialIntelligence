@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 typedef unsigned int uint;
 
 const int boardIndices[64] = {	5,	-1,	 6, -1,  7, -1,  8, -1,
@@ -11,6 +13,9 @@ const int boardIndices[64] = {	5,	-1,	 6, -1,  7, -1,  8, -1,
 								32, -1, 33, -1, 34, -1, 35, -1,
 								-1, 37, -1, 38, -1, 39, -1, 40
 								};
+
+const std::vector<int> validMoves = { 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17,
+19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40 };
 
 struct Board
 {
@@ -28,13 +33,19 @@ enum Colour
 	INVALID = -1
 };
 
+enum Direction
+{
+	UPLEFT = 4,
+	UPRIGHT = 5,
+	DOWNLEFT = -5,
+	DOWNRIGHT = -4
+};
+
 class Checkers
 {
 
 private:
 	Board m_board;
-	
-
 
 public:
 	Checkers();
@@ -42,4 +53,8 @@ public:
 	bool SetPosition(Colour inputColour, uint xPos, uint yPos);
 	Colour GetPosition(uint xPos, uint yPos);
 	void DrawBoard();
+
+	void ResetBoard();
+
+	bool isValidMove(uint xPos, uint yPos, Direction a_direction);
 };

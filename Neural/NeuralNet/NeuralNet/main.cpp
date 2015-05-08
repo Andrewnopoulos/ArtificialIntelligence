@@ -239,17 +239,16 @@ bool CheckersTesting()
 
 	Checkers m_checkersGame;
 
-	m_checkersGame.SetPosition(WHITE, 0, 0);
-	m_checkersGame.SetPosition(WHITE, 2, 0);
-	m_checkersGame.SetPosition(WHITE, 4, 0);
-	m_checkersGame.SetPosition(WHITE, 6, 0);
-
-	m_checkersGame.SetPosition(BLACK, 1, 7);
-	m_checkersGame.SetPosition(BLACK, 3, 7);
-	m_checkersGame.SetPosition(BLACK, 5, 7);
-	m_checkersGame.SetPosition(BLACK, 7, 7);
+	m_checkersGame.ResetBoard();
 
 	m_checkersGame.DrawBoard();
+
+	assert(m_checkersGame.isValidMove(0, 0, Direction::UPLEFT) == false);
+	assert(m_checkersGame.isValidMove(0, 0, Direction::UPRIGHT) == false);
+	assert(m_checkersGame.isValidMove(0, 2, Direction::UPRIGHT) == true);
+	assert(m_checkersGame.isValidMove(0, 2, Direction::UPLEFT) == false);
+
+	system("pause>nul");
 
 	return true;
 }
