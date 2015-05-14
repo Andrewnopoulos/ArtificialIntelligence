@@ -237,16 +237,24 @@ bool UnitTesting()
 bool CheckersTesting()
 {
 
+	using namespace CheckersGame;
+
 	Checkers m_checkersGame;
 
 	m_checkersGame.ResetBoard();
-
-	m_checkersGame.DrawBoard();
 
 	assert(m_checkersGame.isValidMove(0, 0, Direction::UPLEFT) == false);
 	assert(m_checkersGame.isValidMove(0, 0, Direction::UPRIGHT) == false);
 	assert(m_checkersGame.isValidMove(0, 2, Direction::UPRIGHT) == true);
 	assert(m_checkersGame.isValidMove(0, 2, Direction::UPLEFT) == false);
+
+	m_checkersGame.SetPosition(BLACK, 3, 3);
+
+	assert(m_checkersGame.isValidJump(2, 2, Direction::UPRIGHT));
+	assert(!m_checkersGame.isValidJump(2, 2, Direction::UPLEFT));
+
+	m_checkersGame.ResetBoard();
+	m_checkersGame.DrawBoard();
 
 	system("pause>nul");
 

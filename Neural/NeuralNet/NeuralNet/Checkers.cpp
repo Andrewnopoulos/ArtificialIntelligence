@@ -2,10 +2,17 @@
 #include <iostream>
 #include <bitset>
 #include <algorithm>
+#include <stdio.h>
+#include <WinBase.h>
+#include <Windows.h>
+
+using namespace CheckersGame;
 
 Checkers::Checkers()
 {
 	ResetBoard();
+
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
 void Checkers::ResetBoard()
@@ -85,6 +92,60 @@ bool Checkers::isValidMove(uint xPos, uint yPos, Direction a_direction)
 	return false;
 }
 
+bool Checkers::isValidJump(uint xPos, uint yPos, Direction a_direction)
+{
+	uint index = 8 * yPos + xPos;
+
+	uint enemyOffset = boardIndices[index] + a_direction;
+
+	uint destinationOffset = boardIndices[index] + 2 * a_direction;
+
+	Colour currentPosition = GetPosition(xPos, yPos);
+
+	Colour enemyPosition = GetPosition(enemyOffset);
+
+	switch (enemyPosition)
+	{
+	case BLACK: // if enemy position is black
+		if (currentPosition == BLACK) // and current position is also black
+		{
+			return false; // can't jump
+		}
+		break;
+	case WHITE:
+		if (currentPosition == WHITE)
+		{
+			return false;
+		}
+		break;
+	default: // if enemy position isn't black or white
+		return false; // can't jump
+	}
+
+	// if destination isn't even on the board
+	if (std::find(validMoves.begin(), validMoves.end(), destinationOffset) == validMoves.end())
+	{
+		return false;
+	}
+
+	long long bitmask = (1LL << destinationOffset);
+	
+	// if there's a black piece already on the spot
+	if (m_board.m_BlackPieces & bitmask)
+	{
+		return false;
+	}
+	if (m_board.m_WhitePieces & bitmask)
+	{
+		return false;
+	}
+
+	return true;
+
+	// check if the enemy colour is opposite to yours - done
+	// check if destination square is empty and valid - done
+}
+
 bool Checkers::SetPosition(Colour inputColour, uint xPos, uint yPos)
 {
 	int index = 8 * yPos + xPos;
@@ -101,13 +162,32 @@ bool Checkers::SetPosition(Colour inputColour, uint xPos, uint yPos)
 	if (inputColour == Colour::WHITE)
 	{
 		m_board.m_WhitePieces |= offset;
+		m_board.m_BlackPieces &= (~offset);
 	}
 	else if (inputColour == Colour::BLACK)
 	{
 		m_board.m_BlackPieces |= offset;
+		m_board.m_WhitePieces &= (~offset);
 	}
 
 	return true;
+}
+
+Colour Checkers::GetPosition(long long boardLocation)
+{
+	long long offset = (1LL << boardLocation);
+
+	if (m_board.m_WhitePieces & offset)
+	{
+		return WHITE;
+	}
+
+	if (m_board.m_BlackPieces & offset)
+	{
+		return BLACK;
+	}
+
+	return FREEBLACK;
 }
 
 Colour Checkers::GetPosition(uint xPos, uint yPos)
@@ -136,39 +216,61 @@ Colour Checkers::GetPosition(uint xPos, uint yPos)
 	return FREEBLACK;
 }
 
-using namespace std;
-
 void Checkers::DrawBoard()
 {
+	WORD fgcolour;
+	WORD bgcolour;
+
+	using namespace std;
+
 	for (int y = 7; y >= 0; y--)
 	{
+		fgcolour = ConsoleColours::LIGHT_WHITE;
+		bgcolour = ConsoleColours::DARK_BLACK;
+		SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+		cout << y << " ";
 		for (int x = 0; x < 8; x++)
 		{
 			Colour drawOutput = GetPosition(x, y);
 			switch (drawOutput)
 			{
 			case BLACK:
-				cout << drawOutput;
+				fgcolour = ConsoleColours::LIGHT_RED;
+				bgcolour = ConsoleColours::DARK_BLACK;
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << char(169);
 				break;
 			case WHITE:
-				cout << drawOutput;
+				fgcolour = ConsoleColours::LIGHT_WHITE;
+				bgcolour = ConsoleColours::DARK_BLACK;
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << char(169);
 				break;
 			case FREEWHITE:
-				cout << drawOutput;
+				fgcolour = ConsoleColours::LIGHT_RED;
+				bgcolour = ConsoleColours::LIGHT_WHITE;
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << " ";
 				break;
 			case FREEBLACK:
-				cout << drawOutput;
+				fgcolour = ConsoleColours::LIGHT_RED;
+				bgcolour = ConsoleColours::DARK_BLACK;
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << " ";
 				break;
 			default:
 				break;
 			}
-			cout << " ";
 		}
-		cout << endl << endl;
+		cout << endl;
 	}
+	fgcolour = ConsoleColours::LIGHT_WHITE;
+	bgcolour = ConsoleColours::DARK_BLACK;
+	SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+	cout << endl << "  01234567" << endl;
+}
 
-	//bitset<64> x(m_board.m_WhitePieces);
-	//bitset<64> y(m_board.m_BlackPieces);
-	//cout << x << endl;
-	//cout << y << endl;
+WORD Checkers::generateConsoleColour(WORD fgColour, WORD bgColour)
+{
+	return fgColour + (bgColour * 16);
 }
