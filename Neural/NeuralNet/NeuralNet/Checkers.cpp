@@ -251,7 +251,29 @@ void Checkers::Move(uint xPos, uint yPos, Direction a_direction)
 
 void Checkers::Move(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 {
+	uint index = 8 * yPos + xPos;
 
+	int boardLocation = boardIndices[index];
+	int destLocation = boardIndices[index] + a_direction;
+
+	long long currentOffset = (1LL << boardLocation);
+	long long futureOffset = (1LL << destLocation);
+
+	Colour piece = GetPosition(a_board, xPos, yPos);
+
+	switch (piece)
+	{
+	case WHITE:
+		a_board.m_WhitePieces |= futureOffset; // set next piece as white
+		a_board.m_WhitePieces &= (~currentOffset); // get rid of previous white piece
+		break;
+	case BLACK:
+		a_board.m_BlackPieces |= futureOffset; // set next piece as black
+		a_board.m_BlackPieces &= (~currentOffset); // get rid of previous black piece
+		break;
+	default:
+		break;
+	}
 }
 
 void Checkers::DrawBoard()

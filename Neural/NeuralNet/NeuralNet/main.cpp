@@ -233,7 +233,6 @@ bool UnitTesting()
 	return true;
 }
 
-
 bool CheckersTesting()
 {
 
@@ -252,8 +251,12 @@ bool CheckersTesting()
 
 	assert(m_checkersGame.isValidJump(2, 2, Direction::UPRIGHT));
 	assert(!m_checkersGame.isValidJump(2, 2, Direction::UPLEFT));
+	assert(m_checkersGame.isValidJump(4, 2, Direction::UPLEFT));
 
 	m_checkersGame.ResetBoard();
+
+	m_checkersGame.Move(0, 2, UPRIGHT);
+
 	m_checkersGame.DrawBoard();
 
 	system("pause>nul");

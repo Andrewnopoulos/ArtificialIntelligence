@@ -82,7 +82,6 @@ namespace CheckersGame
 		bool SetPosition(Colour inputColour, uint xPos, uint yPos);
 		Colour GetPosition(uint xPos, uint yPos);
 		Colour GetPosition(long long boardLocation);
-		void DrawBoard();
 
 		void ResetBoard();
 
@@ -97,10 +96,10 @@ namespace CheckersGame
 
 		static bool SetPosition(Board& a_board, Colour inputColour, uint xPos, uint yPos);
 
+		void DrawBoard();
 		static void DrawBoard(Board& a_board);
 
 		void Move(uint xPos, uint yPos, Direction a_direction);
-
 		static void Move(Board& a_board, uint xPos, uint yPos, Direction a_direction);
 
 		inline Board GetBoardState()
