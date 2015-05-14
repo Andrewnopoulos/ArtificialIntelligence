@@ -11,8 +11,11 @@ using namespace CheckersGame;
 Checkers::Checkers()
 {
 	ResetBoard();
+}
 
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+Checkers::Checkers(Board a_inputBoard)
+{
+	m_board = a_inputBoard;
 }
 
 void Checkers::ResetBoard()
@@ -54,16 +57,7 @@ void Checkers::ResetBoard()
 	SetPosition(BLACK, 7, 5);
 }
 
-/*
-
-Currently checking if the desired move is to a square that's on the board and it isn't occupied already
-
-TODO
-Check if you can do a jump
-check direction based on colour/kingship
-
-*/
-bool Checkers::isValidMove(uint xPos, uint yPos, Direction a_direction)
+bool Checkers::isValidMove(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 {
 	uint index = 8 * yPos + xPos;
 
@@ -77,12 +71,12 @@ bool Checkers::isValidMove(uint xPos, uint yPos, Direction a_direction)
 		long long bitmask = (1LL << offset);
 
 		// if there's a black piece already on the spot
-		if (m_board.m_BlackPieces & bitmask)
+		if (a_board.m_BlackPieces & bitmask)
 		{
 			return false;
 		}
 
-		if (m_board.m_WhitePieces & bitmask)
+		if (a_board.m_WhitePieces & bitmask)
 		{
 			return false;
 		}
@@ -92,7 +86,7 @@ bool Checkers::isValidMove(uint xPos, uint yPos, Direction a_direction)
 	return false;
 }
 
-bool Checkers::isValidJump(uint xPos, uint yPos, Direction a_direction)
+bool Checkers::isValidJump(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 {
 	uint index = 8 * yPos + xPos;
 
@@ -100,9 +94,9 @@ bool Checkers::isValidJump(uint xPos, uint yPos, Direction a_direction)
 
 	uint destinationOffset = boardIndices[index] + 2 * a_direction;
 
-	Colour currentPosition = GetPosition(xPos, yPos);
+	Colour currentPosition = GetPosition(a_board, xPos, yPos);
 
-	Colour enemyPosition = GetPosition(enemyOffset);
+	Colour enemyPosition = GetPosition(a_board, enemyOffset);
 
 	switch (enemyPosition)
 	{
@@ -129,13 +123,13 @@ bool Checkers::isValidJump(uint xPos, uint yPos, Direction a_direction)
 	}
 
 	long long bitmask = (1LL << destinationOffset);
-	
+
 	// if there's a black piece already on the spot
-	if (m_board.m_BlackPieces & bitmask)
+	if (a_board.m_BlackPieces & bitmask)
 	{
 		return false;
 	}
-	if (m_board.m_WhitePieces & bitmask)
+	if (a_board.m_WhitePieces & bitmask)
 	{
 		return false;
 	}
@@ -146,7 +140,31 @@ bool Checkers::isValidJump(uint xPos, uint yPos, Direction a_direction)
 	// check if destination square is empty and valid - done
 }
 
+/*
+
+Currently checking if the desired move is to a square that's on the board and it isn't occupied already
+
+TODO
+Check if you can do a jump
+check direction based on colour/kingship
+
+*/
+bool Checkers::isValidMove(uint xPos, uint yPos, Direction a_direction)
+{
+	return isValidMove(m_board, xPos, yPos, a_direction);
+}
+
+bool Checkers::isValidJump(uint xPos, uint yPos, Direction a_direction)
+{
+	return isValidJump(m_board, xPos, yPos, a_direction);
+}
+
 bool Checkers::SetPosition(Colour inputColour, uint xPos, uint yPos)
+{
+	return SetPosition(m_board, inputColour, xPos, yPos);
+}
+
+bool Checkers::SetPosition(Board& a_board, Colour inputColour, uint xPos, uint yPos)
 {
 	int index = 8 * yPos + xPos;
 
@@ -161,13 +179,13 @@ bool Checkers::SetPosition(Colour inputColour, uint xPos, uint yPos)
 
 	if (inputColour == Colour::WHITE)
 	{
-		m_board.m_WhitePieces |= offset;
-		m_board.m_BlackPieces &= (~offset);
+		a_board.m_WhitePieces |= offset;
+		a_board.m_BlackPieces &= (~offset);
 	}
 	else if (inputColour == Colour::BLACK)
 	{
-		m_board.m_BlackPieces |= offset;
-		m_board.m_WhitePieces &= (~offset);
+		a_board.m_BlackPieces |= offset;
+		a_board.m_WhitePieces &= (~offset);
 	}
 
 	return true;
@@ -175,14 +193,24 @@ bool Checkers::SetPosition(Colour inputColour, uint xPos, uint yPos)
 
 Colour Checkers::GetPosition(long long boardLocation)
 {
+	return GetPosition(m_board, boardLocation);
+}
+
+Colour Checkers::GetPosition(uint xPos, uint yPos)
+{
+	return GetPosition(m_board, xPos, yPos);
+}
+
+Colour Checkers::GetPosition(Board& a_board, long long boardLocation)
+{
 	long long offset = (1LL << boardLocation);
 
-	if (m_board.m_WhitePieces & offset)
+	if (a_board.m_WhitePieces & offset)
 	{
 		return WHITE;
 	}
 
-	if (m_board.m_BlackPieces & offset)
+	if (a_board.m_BlackPieces & offset)
 	{
 		return BLACK;
 	}
@@ -190,7 +218,7 @@ Colour Checkers::GetPosition(long long boardLocation)
 	return FREEBLACK;
 }
 
-Colour Checkers::GetPosition(uint xPos, uint yPos)
+Colour Checkers::GetPosition(Board& a_board, uint xPos, uint yPos)
 {
 	int index = 8 * yPos + xPos;
 
@@ -203,12 +231,12 @@ Colour Checkers::GetPosition(uint xPos, uint yPos)
 
 	long long offset = (1LL << boardLocation);
 
-	if (m_board.m_WhitePieces & offset)
+	if (a_board.m_WhitePieces & offset)
 	{
 		return WHITE;
 	}
 
-	if (m_board.m_BlackPieces & offset)
+	if (a_board.m_BlackPieces & offset)
 	{
 		return BLACK;
 	}
@@ -216,7 +244,22 @@ Colour Checkers::GetPosition(uint xPos, uint yPos)
 	return FREEBLACK;
 }
 
+void Checkers::Move(uint xPos, uint yPos, Direction a_direction)
+{
+	Move(m_board, xPos, yPos, a_direction);
+}
+
+void Checkers::Move(Board& a_board, uint xPos, uint yPos, Direction a_direction)
+{
+
+}
+
 void Checkers::DrawBoard()
+{
+	DrawBoard(m_board);
+}
+
+void Checkers::DrawBoard(Board& a_board)
 {
 	WORD fgcolour;
 	WORD bgcolour;
@@ -231,7 +274,7 @@ void Checkers::DrawBoard()
 		cout << y << " ";
 		for (int x = 0; x < 8; x++)
 		{
-			Colour drawOutput = GetPosition(x, y);
+			Colour drawOutput = GetPosition(a_board, x, y);
 			switch (drawOutput)
 			{
 			case BLACK:
