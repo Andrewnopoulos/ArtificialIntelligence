@@ -93,6 +93,27 @@ bool Checkers::isValidMove(Board& a_board, uint xPos, uint yPos, Direction a_dir
 			return false;
 		}
 
+		// if it's a king, it's all good, don't need to check for backwards moving
+		if (a_board.m_Kings & bitmask)
+		{
+			return true;
+		}
+		
+		// check if trying to move backwards without being a king
+		if (current == BLACK)
+		{
+			if (a_direction == UPLEFT || a_direction == UPRIGHT)
+			{
+				return false;
+			}
+		}
+		else if (current == WHITE)
+		{
+			if (a_direction == DOWNLEFT || a_direction == DOWNRIGHT)
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 	return false;
