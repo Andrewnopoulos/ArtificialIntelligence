@@ -101,8 +101,8 @@ namespace CheckersGame
 		void DrawBoard();
 		static void DrawBoard(Board& a_board);
 
-		Colour DrawBoard(uint xPos, uint yPos);
-		static Colour DrawBoard(Board& a_board, uint xPos, uint yPos);
+		Colour DrawBoard(uint xPos, uint yPos, bool showMoves = true, bool showJumps = true);
+		static Colour DrawBoard(Board& a_board, uint xPos, uint yPos, bool showMoves = true, bool showJumps = true);
 
 		void Move(uint xPos, uint yPos, Direction a_direction);
 		static void Move(Board& a_board, uint xPos, uint yPos, Direction a_direction);

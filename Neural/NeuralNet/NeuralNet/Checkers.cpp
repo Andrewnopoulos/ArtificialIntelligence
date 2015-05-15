@@ -314,28 +314,59 @@ void Checkers::Move(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 	}
 }
 
-Colour Checkers::DrawBoard(uint xPos, uint yPos)
+Colour Checkers::DrawBoard(uint xPos, uint yPos, bool showMoves, bool showJumps)
 {
-	return DrawBoard(m_board, xPos, yPos);
+	return DrawBoard(m_board, xPos, yPos, showMoves, showJumps);
 }
 
-Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
+Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos, bool showMoves, bool showJumps)
 {
 	WORD fgcolour;
 	WORD bgcolour;
 
 	Colour output = FREEBLACK;
 
-	bool upleft = isValidMove(a_board, xPos, yPos, Direction::UPLEFT);
-	bool upright = isValidMove(a_board, xPos, yPos, Direction::UPRIGHT);
-	bool downleft = isValidMove(a_board, xPos, yPos, Direction::DOWNLEFT);
-	bool downright = isValidMove(a_board, xPos, yPos, Direction::DOWNRIGHT);
+	bool upleft;
+	bool upright;
+	bool downleft;
+	bool downright;
 
-	bool uljump = isValidJump(a_board, xPos, yPos, Direction::UPLEFT);
-	bool urjump = isValidJump(a_board, xPos, yPos, Direction::UPRIGHT);
-	bool dljump = isValidJump(a_board, xPos, yPos, Direction::DOWNLEFT);
-	bool drjump = isValidJump(a_board, xPos, yPos, Direction::DOWNRIGHT);
+	if (showMoves)
+	{
+		upleft = isValidMove(a_board, xPos, yPos, Direction::UPLEFT);
+		upright = isValidMove(a_board, xPos, yPos, Direction::UPRIGHT);
+		downleft = isValidMove(a_board, xPos, yPos, Direction::DOWNLEFT);
+		downright = isValidMove(a_board, xPos, yPos, Direction::DOWNRIGHT);
+	}
+	else
+	{
+		upleft = false;
+		upright = false;
+		downleft = false;
+		downright = false;
+	}
 
+	bool uljump;
+	bool urjump;
+	bool dljump;
+	bool drjump;
+
+	if (showJumps)
+	{
+		uljump = isValidJump(a_board, xPos, yPos, Direction::UPLEFT);
+		urjump = isValidJump(a_board, xPos, yPos, Direction::UPRIGHT);
+		dljump = isValidJump(a_board, xPos, yPos, Direction::DOWNLEFT);
+		drjump = isValidJump(a_board, xPos, yPos, Direction::DOWNRIGHT);
+	}
+	else
+	{
+		uljump = false;
+		urjump = false;
+		dljump = false;
+		drjump = false;
+	}
+
+	// move destinations
 	int ulX = xPos - 1;
 	int ulY = yPos + 1;
 	int urX = xPos + 1;
@@ -345,6 +376,7 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 	int drX = xPos + 1;
 	int drY = yPos - 1;
 
+	// jump destinations
 	int uljumpX = xPos - 2;
 	int uljumpY = yPos + 2;
 	int urjumpX = xPos + 2;
