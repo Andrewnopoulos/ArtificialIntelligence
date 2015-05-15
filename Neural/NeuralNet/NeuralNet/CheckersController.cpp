@@ -28,7 +28,7 @@ CheckersController::~CheckersController()
 	drawTimer = 0;
 }
 
-void CheckersController::UpdateKeyboardInput(float deltaTime)
+void CheckersController::UpdateKeyboardInput()
 {
 	for (int i = 0; i < NUMBEROFKEYS; i++)
 	{
@@ -60,9 +60,9 @@ bool CheckersController::GetKeyPressed(short a_key)
 
 void CheckersController::Update(float deltaTime)
 {
-	UpdateKeyboardInput(deltaTime);
+	UpdateKeyboardInput();
 
-	Colour turn = FREEBLACK;
+	Colour turn = m_game->GetPosition(m_activeX, m_activeY);
 
 	if (GetKeyPressed(VK_A) && m_activeX > 0)
 	{
@@ -88,6 +88,102 @@ void CheckersController::Update(float deltaTime)
 		system("cls");
 		turn = m_game->DrawBoard(m_activeX, m_activeY);
 	}
+
+	if (GetKeyPressed(VK_RETURN) && turn == m_playerTurn)
+	{
+		ChooseMove(turn);
+	}
+}
+
+void CheckersController::ChooseMove(Colour a_playerTurn)
+{
+	std::vector<Board> potentialTurns;
+
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::UPLEFT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Move(newBoard, m_activeX, m_activeY, UPLEFT);
+		potentialTurns.push_back(newBoard);
+	}
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::UPRIGHT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Move(newBoard, m_activeX, m_activeY, UPRIGHT);
+		potentialTurns.push_back(newBoard);
+	}
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::DOWNLEFT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Move(newBoard, m_activeX, m_activeY, DOWNLEFT);
+		potentialTurns.push_back(newBoard);
+	}
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::DOWNRIGHT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Move(newBoard, m_activeX, m_activeY, DOWNRIGHT);
+		potentialTurns.push_back(newBoard);
+	}
+	// potentialTurns now holds a series of potential destination boards
+	// use A and D to cycle between them
+
+	int selection = 0;
+	int maxSelection = potentialTurns.size();
+
+	if (maxSelection == selection)
+	{
+		return;
+	}
+
+	system("cls");
+	m_game->DrawBoard(potentialTurns[0]);
+
+	while (true)
+	{
+		UpdateKeyboardInput();
+
+		if (GetKeyPressed(VK_A))
+		{
+			selection--;
+			if (selection < 0)
+			{
+				selection = maxSelection-1;
+			}
+			system("cls");
+			m_game->DrawBoard(potentialTurns[selection]);
+		}
+
+		if (GetKeyPressed(VK_D))
+		{
+			selection++;
+			if (selection >= maxSelection)
+			{
+				selection = 0;
+			}
+			system("cls");
+			m_game->DrawBoard(potentialTurns[selection]);
+		}
+
+		if (GetKeyPressed(VK_RETURN))
+		{
+			m_game->SetBoardState(potentialTurns[selection]);
+			if (m_playerTurn == BLACK)
+			{
+				m_playerTurn = WHITE;
+			}
+			else if (m_playerTurn == WHITE)
+			{
+				m_playerTurn = BLACK;
+			}
+			break;
+		}
+
+		if (GetKeyPressed(VK_ESCAPE))
+		{
+			break;
+		}
+		
+	}
+
 }
 
 void CheckersController::Draw(float deltaTime)

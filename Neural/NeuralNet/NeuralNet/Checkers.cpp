@@ -15,6 +15,11 @@ Checkers::Checkers()
 
 Checkers::Checkers(Board a_inputBoard)
 {
+	SetBoardState(a_inputBoard);
+}
+
+void Checkers::SetBoardState(Board a_inputBoard)
+{
 	m_board = a_inputBoard;
 }
 

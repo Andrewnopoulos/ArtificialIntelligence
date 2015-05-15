@@ -34,21 +34,23 @@ private:
 	std::map<short, SHORT> m_keystates;
 	std::map<short, SHORT> m_prevstates;
 
+	Colour m_playerTurn = WHITE;
+
 public:
 	CheckersController();
 	~CheckersController();
 
-	bool Turn(Colour a_colour);
-
 	void Draw(float deltaTime);
 	void Update(float deltaTime);
 
-	void UpdateKeyboardInput(float deltaTime);
+	void UpdateKeyboardInput();
 
 	bool GetKeyDown(short a_key);
 
 	bool GetKeyReleased(short a_key);
 
 	bool GetKeyPressed(short a_key);
+
+	void ChooseMove(Colour a_playerTurn);
 
 };

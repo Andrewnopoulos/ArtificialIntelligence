@@ -83,6 +83,8 @@ namespace CheckersGame
 		Colour GetPosition(uint xPos, uint yPos);
 		Colour GetPosition(long long boardLocation);
 
+		void SetBoardState(Board a_inputBoard);
+
 		void ResetBoard();
 
 		bool isValidMove(uint xPos, uint yPos, Direction a_direction);
