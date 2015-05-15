@@ -3,8 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
+#include <stdlib.h>
+#include <chrono>
 
 #include "Checkers.h"
+#include "CheckersController.h"
 
 using namespace std;
 
@@ -259,6 +262,55 @@ bool CheckersTesting()
 
 	m_checkersGame.DrawBoard();
 
+	uint xPos = 0;
+	uint yPos = 0;
+
+	while (1)
+	{
+		system("cls");
+
+		m_checkersGame.DrawBoard(xPos, yPos);
+
+		SHORT val = GetKeyState(VK_UP);
+
+		val = (val >> 8) * -1; // MSB (currently being pressed)
+
+		//val &= 1; // LSB (toggle)
+
+		cout << val;
+
+		//Sleep(1000);
+	}
+
+	system("pause>nul");
+
+	return true;
+}
+
+bool WrapperTesting()
+{
+	CheckersController m_controller;
+
+	long long prevTime = 0;
+	long long currentTime = 0;
+	chrono::milliseconds timeLord;
+
+	while (1)
+	{
+		prevTime = currentTime;
+
+		timeLord = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+
+		currentTime = timeLord.count();
+
+		long long deltaTime = (currentTime - prevTime);
+
+		float dt = deltaTime / 1000.0f;
+
+		m_controller.Update(dt);
+		m_controller.Draw(dt);
+	}
+
 	system("pause>nul");
 
 	return true;
@@ -269,7 +321,7 @@ int main()
 
 	srand(time(NULL));
 
-	CheckersTesting();
+	WrapperTesting();
 
 	return 0;
 }

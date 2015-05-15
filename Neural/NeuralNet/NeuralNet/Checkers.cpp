@@ -276,6 +276,88 @@ void Checkers::Move(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 	}
 }
 
+void Checkers::DrawBoard(uint xPos, uint yPos)
+{
+	DrawBoard(m_board, xPos, yPos);
+}
+
+void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
+{
+	WORD fgcolour;
+	WORD bgcolour;
+
+	using namespace std;
+
+	for (int y = 7; y >= 0; y--)
+	{
+		fgcolour = ConsoleColours::LIGHT_WHITE;
+		bgcolour = ConsoleColours::DARK_BLACK;
+		SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+		cout << y << " ";
+		for (int x = 0; x < 8; x++)
+		{
+			bool selection = false;
+
+			if (x == xPos && y == yPos)
+			{
+				selection = true;
+			}
+
+			Colour drawOutput = GetPosition(a_board, x, y);
+			switch (drawOutput)
+			{
+			case BLACK:
+				fgcolour = ConsoleColours::LIGHT_RED;
+				bgcolour = ConsoleColours::DARK_BLACK;
+				if (selection)
+				{
+					bgcolour = ConsoleColours::LIGHT_GREEN;
+				}
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << char(169);
+				break;
+			case WHITE:
+				fgcolour = ConsoleColours::LIGHT_WHITE;
+				bgcolour = ConsoleColours::DARK_BLACK;
+				if (selection)
+				{
+					bgcolour = ConsoleColours::LIGHT_GREEN;
+				}
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << char(169);
+				break;
+			case FREEWHITE:
+				fgcolour = ConsoleColours::LIGHT_RED;
+				bgcolour = ConsoleColours::LIGHT_WHITE;
+				if (selection)
+				{
+					bgcolour = ConsoleColours::LIGHT_GREEN;
+				}
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << " ";
+				break;
+			case FREEBLACK:
+				fgcolour = ConsoleColours::LIGHT_RED;
+				bgcolour = ConsoleColours::DARK_BLACK;
+				if (selection)
+				{
+					bgcolour = ConsoleColours::LIGHT_GREEN;
+				}
+				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+				cout << " ";
+				break;
+			default:
+				break;
+			}
+		}
+		cout << endl;
+	}
+	fgcolour = ConsoleColours::LIGHT_WHITE;
+	bgcolour = ConsoleColours::DARK_BLACK;
+	SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
+	cout << endl << "  01234567" << endl;
+}
+
 void Checkers::DrawBoard()
 {
 	DrawBoard(m_board);
