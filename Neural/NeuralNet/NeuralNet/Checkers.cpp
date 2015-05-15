@@ -66,6 +66,13 @@ bool Checkers::isValidMove(Board& a_board, uint xPos, uint yPos, Direction a_dir
 
 	uint offset = boardIndices[index] + a_direction;
 
+	Colour current = GetPosition(a_board, xPos, yPos);
+
+	if (current == FREEBLACK || current == FREEWHITE)
+	{
+		return false;
+	}
+
 	if (std::find(validMoves.begin(), validMoves.end(), offset) != validMoves.end()) // if the move is at least on the board
 	{
 		long long bitmask = (1LL << offset);
@@ -276,15 +283,31 @@ void Checkers::Move(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 	}
 }
 
-void Checkers::DrawBoard(uint xPos, uint yPos)
+Colour Checkers::DrawBoard(uint xPos, uint yPos)
 {
-	DrawBoard(m_board, xPos, yPos);
+	return DrawBoard(m_board, xPos, yPos);
 }
 
-void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
+Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 {
 	WORD fgcolour;
 	WORD bgcolour;
+
+	Colour output = FREEBLACK;
+
+	bool upleft = isValidMove(a_board, xPos, yPos, Direction::UPLEFT);
+	bool upright = isValidMove(a_board, xPos, yPos, Direction::UPRIGHT);
+	bool downleft = isValidMove(a_board, xPos, yPos, Direction::DOWNLEFT);
+	bool downright = isValidMove(a_board, xPos, yPos, Direction::DOWNRIGHT);
+
+	int ulX = xPos - 1;
+	int ulY = yPos + 1;
+	int urX = xPos + 1;
+	int urY = yPos + 1;
+	int dlX = xPos - 1;
+	int dlY = yPos - 1;
+	int drX = xPos + 1;
+	int drY = yPos - 1;
 
 	using namespace std;
 
@@ -303,6 +326,25 @@ void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				selection = true;
 			}
 
+			bool prediction = false;
+
+			if (x == ulX && y == ulY && upleft)
+			{
+				prediction = true;
+			}
+			if (x == urX && y == urY && upright)
+			{
+				prediction = true;
+			}
+			if (x == dlX && y == dlY && downleft)
+			{
+				prediction = true;
+			}
+			if (x == drX && y == drY && downright)
+			{
+				prediction = true;
+			}
+
 			Colour drawOutput = GetPosition(a_board, x, y);
 			switch (drawOutput)
 			{
@@ -312,6 +354,11 @@ void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				if (selection)
 				{
 					bgcolour = ConsoleColours::LIGHT_GREEN;
+					output = BLACK;
+				}
+				if (prediction)
+				{
+					bgcolour = ConsoleColours::AQUA;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << char(169);
@@ -322,6 +369,11 @@ void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				if (selection)
 				{
 					bgcolour = ConsoleColours::LIGHT_GREEN;
+					output = WHITE;
+				}
+				if (prediction)
+				{
+					bgcolour = ConsoleColours::AQUA;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << char(169);
@@ -332,6 +384,11 @@ void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				if (selection)
 				{
 					bgcolour = ConsoleColours::LIGHT_GREEN;
+					output = FREEWHITE;
+				}
+				if (prediction)
+				{
+					bgcolour = ConsoleColours::AQUA;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << " ";
@@ -342,6 +399,11 @@ void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				if (selection)
 				{
 					bgcolour = ConsoleColours::LIGHT_GREEN;
+					output = FREEBLACK;
+				}
+				if (prediction)
+				{
+					bgcolour = ConsoleColours::AQUA;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << " ";
@@ -356,6 +418,8 @@ void Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 	bgcolour = ConsoleColours::DARK_BLACK;
 	SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 	cout << endl << "  01234567" << endl;
+
+	return output;
 }
 
 void Checkers::DrawBoard()

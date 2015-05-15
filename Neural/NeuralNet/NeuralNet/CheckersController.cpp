@@ -62,29 +62,31 @@ void CheckersController::Update(float deltaTime)
 {
 	UpdateKeyboardInput(deltaTime);
 
+	Colour turn = FREEBLACK;
+
 	if (GetKeyPressed(VK_A) && m_activeX > 0)
 	{
 		m_activeX--;
 		system("cls");
-		m_game->DrawBoard(m_activeX, m_activeY);
+		turn = m_game->DrawBoard(m_activeX, m_activeY);
 	}
 	if (GetKeyPressed(VK_W) && m_activeY < 7)
 	{
 		m_activeY++;
 		system("cls");
-		m_game->DrawBoard(m_activeX, m_activeY);
+		turn = m_game->DrawBoard(m_activeX, m_activeY);
 	}
 	if (GetKeyPressed(VK_S) && m_activeY > 0)
 	{
 		m_activeY--;
 		system("cls");
-		m_game->DrawBoard(m_activeX, m_activeY);
+		turn = m_game->DrawBoard(m_activeX, m_activeY);
 	}
 	if (GetKeyPressed(VK_D) && m_activeX < 7)
 	{
 		m_activeX++;
 		system("cls");
-		m_game->DrawBoard(m_activeX, m_activeY);
+		turn = m_game->DrawBoard(m_activeX, m_activeY);
 	}
 }
 
