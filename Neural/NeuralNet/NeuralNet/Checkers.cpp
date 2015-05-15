@@ -131,6 +131,11 @@ bool Checkers::isValidJump(Board& a_board, uint xPos, uint yPos, Direction a_dir
 
 	Colour enemyPosition = GetPosition(a_board, enemyOffset);
 
+	if (currentPosition == FREEBLACK || currentPosition == FREEWHITE)
+	{
+		return false;
+	}
+
 	switch (enemyPosition)
 	{
 	case BLACK: // if enemy position is black
@@ -326,6 +331,11 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 	bool downleft = isValidMove(a_board, xPos, yPos, Direction::DOWNLEFT);
 	bool downright = isValidMove(a_board, xPos, yPos, Direction::DOWNRIGHT);
 
+	bool uljump = isValidJump(a_board, xPos, yPos, Direction::UPLEFT);
+	bool urjump = isValidJump(a_board, xPos, yPos, Direction::UPRIGHT);
+	bool dljump = isValidJump(a_board, xPos, yPos, Direction::DOWNLEFT);
+	bool drjump = isValidJump(a_board, xPos, yPos, Direction::DOWNRIGHT);
+
 	int ulX = xPos - 1;
 	int ulY = yPos + 1;
 	int urX = xPos + 1;
@@ -334,6 +344,15 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 	int dlY = yPos - 1;
 	int drX = xPos + 1;
 	int drY = yPos - 1;
+
+	int uljumpX = xPos - 2;
+	int uljumpY = yPos + 2;
+	int urjumpX = xPos + 2;
+	int urjumpY = yPos + 2;
+	int dljumpX = xPos - 2;
+	int dljumpY = yPos - 2;
+	int drjumpX = xPos + 2;
+	int drjumpY = yPos - 2;
 
 	using namespace std;
 
@@ -346,6 +365,7 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 		for (int x = 0; x < 8; x++)
 		{
 			bool selection = false;
+			bool jumpspace = false;
 
 			if (x == xPos && y == yPos)
 			{
@@ -371,6 +391,23 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				prediction = true;
 			}
 
+			if (x == uljumpX && y == uljumpY && uljump)
+			{
+				jumpspace = true;
+			}
+			if (x == urjumpX && y == urjumpY && urjump)
+			{
+				jumpspace = true;
+			}
+			if (x == dljumpX && y == dljumpY && dljump)
+			{
+				jumpspace = true;
+			}
+			if (x == drjumpX && y == drjumpY && drjump)
+			{
+				jumpspace = true;
+			}
+
 			Colour drawOutput = GetPosition(a_board, x, y);
 			switch (drawOutput)
 			{
@@ -385,6 +422,10 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				if (prediction)
 				{
 					bgcolour = ConsoleColours::AQUA;
+				}
+				if (jumpspace)
+				{
+					bgcolour = ConsoleColours::DARK_PURPLE;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << char(169);
@@ -401,6 +442,10 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				{
 					bgcolour = ConsoleColours::AQUA;
 				}
+				if (jumpspace)
+				{
+					bgcolour = ConsoleColours::DARK_PURPLE;
+				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << char(169);
 				break;
@@ -416,6 +461,10 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				{
 					bgcolour = ConsoleColours::AQUA;
 				}
+				if (jumpspace)
+				{
+					bgcolour = ConsoleColours::DARK_PURPLE;
+				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << " ";
 				break;
@@ -430,6 +479,10 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos)
 				if (prediction)
 				{
 					bgcolour = ConsoleColours::AQUA;
+				}
+				if (jumpspace)
+				{
+					bgcolour = ConsoleColours::DARK_PURPLE;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 				cout << " ";
