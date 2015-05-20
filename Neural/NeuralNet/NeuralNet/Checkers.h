@@ -107,6 +107,9 @@ namespace CheckersGame
 		void Move(uint xPos, uint yPos, Direction a_direction);
 		static void Move(Board& a_board, uint xPos, uint yPos, Direction a_direction);
 
+		void Jump(uint xPos, uint yPos, Direction a_direction);
+		static void Jump(Board& a_board, uint xPos, uint yPos, Direction a_direction);
+
 		inline Board GetBoardState()
 		{
 			return m_board;

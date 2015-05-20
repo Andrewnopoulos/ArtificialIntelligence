@@ -123,6 +123,30 @@ void CheckersController::ChooseMove(Colour a_playerTurn)
 		m_game->Move(newBoard, m_activeX, m_activeY, DOWNRIGHT);
 		potentialTurns.push_back(newBoard);
 	}
+	if (m_game->isValidJump(m_activeX, m_activeY, Direction::UPLEFT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, m_activeX, m_activeY, UPLEFT);
+		potentialTurns.push_back(newBoard);
+	}
+	if (m_game->isValidJump(m_activeX, m_activeY, Direction::UPRIGHT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, m_activeX, m_activeY, UPRIGHT);
+		potentialTurns.push_back(newBoard);
+	}
+	if (m_game->isValidJump(m_activeX, m_activeY, Direction::DOWNLEFT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, m_activeX, m_activeY, DOWNLEFT);
+		potentialTurns.push_back(newBoard);
+	}
+	if (m_game->isValidJump(m_activeX, m_activeY, Direction::DOWNRIGHT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, m_activeX, m_activeY, DOWNRIGHT);
+		potentialTurns.push_back(newBoard);
+	}
 	// potentialTurns now holds a series of potential destination boards
 	// use A and D to cycle between them
 

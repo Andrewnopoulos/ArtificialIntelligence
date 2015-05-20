@@ -314,6 +314,44 @@ void Checkers::Move(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 	}
 }
 
+void Checkers::Jump(uint xPos, uint yPos, Direction a_direction)
+{
+	Jump(m_board, xPos, yPos, a_direction);
+}
+
+void Checkers::Jump(Board& a_board, uint xPos, uint yPos, Direction a_direction)
+{
+	uint index = 8 * yPos + xPos;
+
+	int currentSquare = boardIndices[index];
+
+	int enemyLocation = currentSquare + a_direction;
+
+	int futureLocation = enemyLocation + a_direction;
+
+	Colour currentPiece = GetPosition(a_board, xPos, yPos);
+
+	long long currentOffset = 1LL << currentSquare;
+	long long enemyOffset = 1LL << enemyLocation;
+	long long futureOffset = 1LL << futureLocation;
+
+	switch (currentPiece)
+	{
+	case WHITE:
+		a_board.m_WhitePieces |= futureOffset; // set the white piece at the future point
+		a_board.m_WhitePieces &= (~currentOffset); // delete previous white piece location
+		a_board.m_BlackPieces &= (~enemyOffset); // delete black piece that was jumped
+		break;
+	case BLACK:
+		a_board.m_BlackPieces |= futureOffset;
+		a_board.m_BlackPieces &= (~currentOffset);
+		a_board.m_WhitePieces &= (~enemyOffset);
+		break;
+	default:
+		break;
+	}
+}
+
 Colour Checkers::DrawBoard(uint xPos, uint yPos, bool showMoves, bool showJumps)
 {
 	return DrawBoard(m_board, xPos, yPos, showMoves, showJumps);
