@@ -11,6 +11,11 @@ using namespace CheckersGame;
 Checkers::Checkers()
 {
 	ResetBoard();
+
+	//for (int i = 0; i < validMoves.size(); i++)
+	//{
+	//	validBitField += 1LL << validMoves[i];
+	//}
 }
 
 Checkers::Checkers(Board a_inputBoard)
@@ -62,6 +67,43 @@ void Checkers::ResetBoard()
 	SetPosition(BLACK, 7, 5);
 }
 
+// check if it's a king. If it's a king, it's all good. Otherwise, check direction based on colour
+bool Checkers::CheckMoveDirection(Board& a_board, uint xPos, uint yPos, Direction a_direction)
+{
+	uint index = 8 * yPos + xPos;
+	uint pieceLocation = boardIndices[index];
+
+	long long bitmask = (1LL << pieceLocation);
+
+	// if it's a king, any direction move is valid
+	if (bitmask & a_board.m_Kings)
+	{
+		return true;
+	}
+
+	Colour pieceColour = GetPosition(a_board, xPos, yPos);
+
+	switch (pieceColour)
+	{
+	case WHITE:
+		if (a_direction > 0) // if it's white, only upwards moves are valid
+		{
+			return true;
+		}
+		break;
+	case BLACK:
+		if (a_direction < 0) // if it's black, only downwards moves are valid
+		{
+			return true;
+		}
+		break;
+	default:
+		break;
+	}
+	return false;
+}
+
+// BUG - returns valid jump if jumping outside the map
 bool Checkers::isValidMove(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 {
 	uint index = 8 * yPos + xPos;
@@ -74,6 +116,12 @@ bool Checkers::isValidMove(Board& a_board, uint xPos, uint yPos, Direction a_dir
 	Colour current = GetPosition(a_board, xPos, yPos);
 
 	if (current == FREEBLACK || current == FREEWHITE)
+	{
+		return false;
+	}
+
+	// if it's an invalid move direction based off colour/kingship
+	if (!CheckMoveDirection(a_board, xPos, yPos, a_direction))
 	{
 		return false;
 	}
@@ -93,27 +141,6 @@ bool Checkers::isValidMove(Board& a_board, uint xPos, uint yPos, Direction a_dir
 			return false;
 		}
 
-		// if it's a king, it's all good, don't need to check for backwards moving
-		if (a_board.m_Kings & bitmask)
-		{
-			return true;
-		}
-		
-		// check if trying to move backwards without being a king
-		if (current == BLACK)
-		{
-			if (a_direction == UPLEFT || a_direction == UPRIGHT)
-			{
-				return false;
-			}
-		}
-		else if (current == WHITE)
-		{
-			if (a_direction == DOWNLEFT || a_direction == DOWNRIGHT)
-			{
-				return false;
-			}
-		}
 		return true;
 	}
 	return false;
@@ -132,6 +159,12 @@ bool Checkers::isValidJump(Board& a_board, uint xPos, uint yPos, Direction a_dir
 	Colour enemyPosition = GetPosition(a_board, enemyOffset);
 
 	if (currentPosition == FREEBLACK || currentPosition == FREEWHITE)
+	{
+		return false;
+	}
+
+	// if it's an invalid move direction based off colour/kingship
+	if (!CheckMoveDirection(a_board, xPos, yPos, a_direction))
 	{
 		return false;
 	}
@@ -176,6 +209,49 @@ bool Checkers::isValidJump(Board& a_board, uint xPos, uint yPos, Direction a_dir
 
 	// check if the enemy colour is opposite to yours - done
 	// check if destination square is empty and valid - done
+}
+
+bool Checkers::ValidJumpExists(Colour a_colour)
+{
+	return ValidJumpExists(m_board, a_colour);
+}
+
+bool Checkers::ValidJumpExists(Board& a_board, Colour a_colour)
+{
+	long long output = 0;
+	long long enemy = 0;
+	long long urJumps;
+	long long ulJumps;
+	long long drJumps;
+	long long dlJumps;
+	long long king = a_board.m_Kings;
+
+	int dl = -1 * DOWNLEFT;
+	int dr = -1 * DOWNRIGHT;
+
+	switch (a_colour)
+	{
+	case WHITE:
+		output = a_board.m_WhitePieces;
+		enemy = a_board.m_BlackPieces;
+		urJumps = (((output << UPRIGHT) & enemy) << UPRIGHT) & (~(output | enemy)) & validBitField;
+		ulJumps = (((output << UPLEFT) & enemy) << UPLEFT) & (~(output | enemy)) & validBitField;
+		drJumps = ((((output & king) >> dr) & enemy) >> dr) & (~(output | enemy)) & validBitField;
+		dlJumps = ((((output & king) >> dl) & enemy) >> dl) & (~(output | enemy)) & validBitField;
+		break;
+	case BLACK:
+		output = a_board.m_BlackPieces;
+		enemy = a_board.m_WhitePieces;
+		urJumps = ((((output & king) << UPRIGHT) & enemy) << UPRIGHT) & (~(output | enemy)) & validBitField;
+		ulJumps = ((((output & king) << UPLEFT) & enemy) << UPLEFT) & (~(output | enemy)) & validBitField;
+		drJumps = (((output >> dr) & enemy) >> dr) & (~(output | enemy)) & validBitField;
+		dlJumps = (((output >> dl) & enemy) >> dl) & (~(output | enemy)) & validBitField;
+		break;
+	default:
+		break;
+	}
+
+	return urJumps + ulJumps + drJumps + dlJumps;
 }
 
 /*
@@ -282,6 +358,52 @@ Colour Checkers::GetPosition(Board& a_board, uint xPos, uint yPos)
 	return FREEBLACK;
 }
 
+void Checkers::King(int boardLocation)
+{
+	King(m_board, boardLocation);
+}
+
+void Checkers::King(Board& a_board, int boardLocation)
+{
+	long long bitmask = 1LL << boardLocation;
+
+	a_board.m_Kings |= bitmask; // activate kingship for piece
+}
+
+bool Checkers::IsKing(uint xPos, uint yPos)
+{
+	return IsKing(m_board, xPos, yPos);
+}
+
+bool Checkers::IsKing(Board& a_board, uint xPos, uint yPos)
+{
+	uint index = 8 * yPos + xPos;
+
+	int boardLocation = boardIndices[index];
+
+	return a_board.m_Kings & (1LL << boardLocation);
+}
+
+Colour Checkers::GameOver()
+{
+	return GameOver(m_board);
+}
+
+Colour Checkers::GameOver(Board& a_board)
+{
+	if (a_board.m_BlackPieces == 0)
+	{
+		return WHITE;
+	}
+
+	if (a_board.m_WhitePieces == 0)
+	{
+		return BLACK;
+	}
+
+	return FREEWHITE;
+}
+
 void Checkers::Move(uint xPos, uint yPos, Direction a_direction)
 {
 	Move(m_board, xPos, yPos, a_direction);
@@ -299,15 +421,30 @@ void Checkers::Move(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 
 	Colour piece = GetPosition(a_board, xPos, yPos);
 
+	// if it's a king
+	if (a_board.m_Kings & currentOffset)
+	{
+		a_board.m_Kings |= futureOffset; // put a king on future spot
+		a_board.m_Kings &= (~currentOffset); // remove old kingship
+	}
+
 	switch (piece)
 	{
 	case WHITE:
 		a_board.m_WhitePieces |= futureOffset; // set next piece as white
 		a_board.m_WhitePieces &= (~currentOffset); // get rid of previous white piece
+		if (yPos == 6)
+		{
+			King(a_board, destLocation);
+		}
 		break;
 	case BLACK:
 		a_board.m_BlackPieces |= futureOffset; // set next piece as black
 		a_board.m_BlackPieces &= (~currentOffset); // get rid of previous black piece
+		if (yPos == 1)
+		{
+			King(a_board, destLocation);
+		}
 		break;
 	default:
 		break;
@@ -335,17 +472,34 @@ void Checkers::Jump(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 	long long enemyOffset = 1LL << enemyLocation;
 	long long futureOffset = 1LL << futureLocation;
 
+	// if it's a king doing the jump
+	if (a_board.m_Kings & currentOffset)
+	{
+		a_board.m_Kings |= futureOffset; // put a king on future spot
+		a_board.m_Kings &= (~currentOffset); // remove old kingship
+	}
+
+	a_board.m_Kings &= (~enemyOffset); // delete enemy kingship
+
 	switch (currentPiece)
 	{
 	case WHITE:
 		a_board.m_WhitePieces |= futureOffset; // set the white piece at the future point
 		a_board.m_WhitePieces &= (~currentOffset); // delete previous white piece location
 		a_board.m_BlackPieces &= (~enemyOffset); // delete black piece that was jumped
+		if (yPos == 5)
+		{
+			King(a_board, futureLocation);
+		}
 		break;
 	case BLACK:
 		a_board.m_BlackPieces |= futureOffset;
 		a_board.m_BlackPieces &= (~currentOffset);
 		a_board.m_WhitePieces &= (~enemyOffset);
+		if (yPos == 2)
+		{
+			King(a_board, futureLocation);
+		}
 		break;
 	default:
 		break;
@@ -498,7 +652,14 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos, bool showMoves,
 					bgcolour = ConsoleColours::DARK_PURPLE;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
-				cout << char(169);
+				if (IsKing(a_board, x, y))
+				{
+					cout << "@";
+				}
+				else
+				{
+					cout << char(169);
+				}
 				break;
 			case WHITE:
 				fgcolour = ConsoleColours::LIGHT_WHITE;
@@ -517,7 +678,14 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos, bool showMoves,
 					bgcolour = ConsoleColours::DARK_PURPLE;
 				}
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
-				cout << char(169);
+				if (IsKing(a_board, x, y))
+				{
+					cout << "@";
+				}
+				else
+				{
+					cout << char(169);
+				}
 				break;
 			case FREEWHITE:
 				fgcolour = ConsoleColours::LIGHT_RED;
@@ -568,6 +736,10 @@ Colour Checkers::DrawBoard(Board& a_board, uint xPos, uint yPos, bool showMoves,
 	SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
 	cout << endl << "  01234567" << endl;
 
+	cout << "White can jump: " << ValidJumpExists(a_board, WHITE) << endl;
+
+	cout << "Black can jump: " << ValidJumpExists(a_board, BLACK) << endl;
+
 	return output;
 }
 
@@ -598,13 +770,27 @@ void Checkers::DrawBoard(Board& a_board)
 				fgcolour = ConsoleColours::LIGHT_RED;
 				bgcolour = ConsoleColours::DARK_BLACK;
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
-				cout << char(169);
+				if (IsKing(a_board, x, y))
+				{
+					cout << "@";
+				}
+				else
+				{
+					cout << char(169);
+				}
 				break;
 			case WHITE:
 				fgcolour = ConsoleColours::LIGHT_WHITE;
 				bgcolour = ConsoleColours::DARK_BLACK;
 				SetConsoleTextAttribute(hConsole, generateConsoleColour(fgcolour, bgcolour));
-				cout << char(169);
+				if (IsKing(a_board, x, y))
+				{
+					cout << "@";
+				}
+				else
+				{
+					cout << char(169);
+				}
 				break;
 			case FREEWHITE:
 				fgcolour = ConsoleColours::LIGHT_RED;

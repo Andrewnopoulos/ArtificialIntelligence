@@ -21,6 +21,9 @@ namespace CheckersGame
 	const std::vector<int> validMoves = { 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17,
 		19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40 };
 
+	// create bitfield that is true for all valid positions to check valid jump checking
+	const long long validBitField = 2130169298400;
+
 	enum ConsoleColours : WORD
 	{
 		DARK_BLACK = 0,
@@ -109,6 +112,20 @@ namespace CheckersGame
 
 		void Jump(uint xPos, uint yPos, Direction a_direction);
 		static void Jump(Board& a_board, uint xPos, uint yPos, Direction a_direction);
+
+		static bool CheckMoveDirection(Board& a_board, uint xPos, uint yPos, Direction a_direction);
+
+		bool ValidJumpExists(Colour a_colour);
+		static bool ValidJumpExists(Board& a_board, Colour a_colour);
+
+		void King(int boardLocation);
+		static void King(Board& a_board, int boardLocation);
+
+		bool IsKing(uint xPos, uint yPos);
+		static bool IsKing(Board& a_board, uint xPos, uint yPos);
+
+		Colour GameOver();
+		static Colour GameOver(Board& a_board);
 
 		inline Board GetBoardState()
 		{

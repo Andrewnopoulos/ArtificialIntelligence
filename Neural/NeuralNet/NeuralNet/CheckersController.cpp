@@ -60,6 +60,27 @@ bool CheckersController::GetKeyPressed(short a_key)
 
 void CheckersController::Update(float deltaTime)
 {
+	Colour gameOver = m_game->GameOver();
+
+	if (gameOver)
+	{
+		system("cls");
+		switch (gameOver)
+		{
+		case WHITE:
+			std::cout << "White wins!!" << std::endl;
+			break;
+		case BLACK:
+			std::cout << "Black wins!!" << std::endl;
+			break;
+		default:
+			break;
+		}
+		
+		system("pause");
+		m_game->ResetBoard();
+	}
+
 	UpdateKeyboardInput();
 
 	Colour turn = m_game->GetPosition(m_activeX, m_activeY);
@@ -95,29 +116,149 @@ void CheckersController::Update(float deltaTime)
 	}
 }
 
+// checks if any possible jumps and forces the player to take one
+void CheckersController::ChooseJump(Colour a_playerTurn, uint xPos, uint yPos)
+{
+	std::vector<Board> potentialJumps;
+	std::vector<Move> potentialMoves;
+
+	bool validJumps = m_game->ValidJumpExists(a_playerTurn);
+
+	if (!validJumps)
+	{
+		return;
+	}
+
+	if (m_game->isValidJump(xPos, yPos, Direction::UPLEFT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, xPos, yPos, UPLEFT);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(xPos, yPos, UPLEFT, JUMP));
+	}
+	if (m_game->isValidJump(xPos, yPos, Direction::UPRIGHT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, xPos, yPos, UPRIGHT);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(xPos, yPos, UPRIGHT, JUMP));
+	}
+	if (m_game->isValidJump(xPos, yPos, Direction::DOWNLEFT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, xPos, yPos, DOWNLEFT);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(xPos, yPos, DOWNLEFT, JUMP));
+	}
+	if (m_game->isValidJump(xPos, yPos, Direction::DOWNRIGHT))
+	{
+		Board newBoard = m_game->GetBoardState();
+		m_game->Jump(newBoard, xPos, yPos, DOWNRIGHT);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(xPos, yPos, DOWNRIGHT, JUMP));
+	}
+
+	int selection = 0;
+	int maxSelection = potentialJumps.size();
+
+	if (maxSelection == selection)
+	{
+		return;
+	}
+
+	system("cls");
+	m_game->DrawBoard(potentialJumps[0]);
+
+	while (true)
+	{
+		UpdateKeyboardInput();
+
+		if (GetKeyPressed(VK_A))
+		{
+			selection--;
+			if (selection < 0)
+			{
+				selection = maxSelection - 1;
+			}
+			system("cls");
+			m_game->DrawBoard(potentialJumps[selection]);
+		}
+
+		if (GetKeyPressed(VK_D))
+		{
+			selection++;
+			if (selection >= maxSelection)
+			{
+				selection = 0;
+			}
+			system("cls");
+			m_game->DrawBoard(potentialJumps[selection]);
+		}
+
+		if (GetKeyPressed(VK_RETURN))
+		{
+			m_game->SetBoardState(potentialJumps[selection]);
+
+			Move selected = potentialMoves[selection];
+
+			if (selected.m_move == MoveType::JUMP)
+			{
+				switch (selected.m_direction)
+				{
+				case UPLEFT:
+					ChooseJump(a_playerTurn, m_activeX - 2, m_activeY + 2);
+					break;
+				case UPRIGHT:
+					ChooseJump(a_playerTurn, m_activeX + 2, m_activeY + 2);
+					break;
+				case DOWNLEFT:
+					ChooseJump(a_playerTurn, m_activeX - 2, m_activeY - 2);
+					break;
+				case DOWNRIGHT:
+					ChooseJump(a_playerTurn, m_activeX + 2, m_activeY - 2);
+					break;
+				default:
+					break;
+				}
+			}
+			break;
+		}
+
+		if (GetKeyPressed(VK_ESCAPE))
+		{
+			break;
+		}
+	}
+}
+
 void CheckersController::ChooseMove(Colour a_playerTurn)
 {
 	std::vector<Board> potentialTurns;
+	std::vector<Board> potentialJumps;
 
-	if (m_game->isValidMove(m_activeX, m_activeY, Direction::UPLEFT))
+	std::vector<Move> potentialMoves;
+
+	bool validJumps = m_game->ValidJumpExists(a_playerTurn);
+
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::UPLEFT) && !validJumps)
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Move(newBoard, m_activeX, m_activeY, UPLEFT);
 		potentialTurns.push_back(newBoard);
 	}
-	if (m_game->isValidMove(m_activeX, m_activeY, Direction::UPRIGHT))
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::UPRIGHT) && !validJumps)
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Move(newBoard, m_activeX, m_activeY, UPRIGHT);
 		potentialTurns.push_back(newBoard);
 	}
-	if (m_game->isValidMove(m_activeX, m_activeY, Direction::DOWNLEFT))
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::DOWNLEFT) && !validJumps)
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Move(newBoard, m_activeX, m_activeY, DOWNLEFT);
 		potentialTurns.push_back(newBoard);
 	}
-	if (m_game->isValidMove(m_activeX, m_activeY, Direction::DOWNRIGHT))
+	if (m_game->isValidMove(m_activeX, m_activeY, Direction::DOWNRIGHT) && !validJumps)
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Move(newBoard, m_activeX, m_activeY, DOWNRIGHT);
@@ -127,28 +268,37 @@ void CheckersController::ChooseMove(Colour a_playerTurn)
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, UPLEFT);
-		potentialTurns.push_back(newBoard);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(m_activeX, m_activeY, UPLEFT, JUMP));
 	}
 	if (m_game->isValidJump(m_activeX, m_activeY, Direction::UPRIGHT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, UPRIGHT);
-		potentialTurns.push_back(newBoard);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(m_activeX, m_activeY, UPRIGHT, JUMP));
 	}
 	if (m_game->isValidJump(m_activeX, m_activeY, Direction::DOWNLEFT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, DOWNLEFT);
-		potentialTurns.push_back(newBoard);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(m_activeX, m_activeY, DOWNLEFT, JUMP));
 	}
 	if (m_game->isValidJump(m_activeX, m_activeY, Direction::DOWNRIGHT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, DOWNRIGHT);
-		potentialTurns.push_back(newBoard);
+		potentialJumps.push_back(newBoard);
+		potentialMoves.push_back(Move(m_activeX, m_activeY, DOWNRIGHT, JUMP));
 	}
 	// potentialTurns now holds a series of potential destination boards
 	// use A and D to cycle between them
+
+	if (potentialJumps.size() > 0)
+	{
+		potentialTurns = potentialJumps;
+	}
 
 	int selection = 0;
 	int maxSelection = potentialTurns.size();
@@ -190,6 +340,33 @@ void CheckersController::ChooseMove(Colour a_playerTurn)
 		if (GetKeyPressed(VK_RETURN))
 		{
 			m_game->SetBoardState(potentialTurns[selection]);
+
+			if (potentialJumps.size() != 0)
+			{
+				Move selected = potentialMoves[selection];
+
+				if (selected.m_move == MoveType::JUMP)
+				{
+					switch (selected.m_direction)
+					{
+					case UPLEFT:
+						ChooseJump(a_playerTurn, m_activeX - 2, m_activeY + 2);
+						break;
+					case UPRIGHT:
+						ChooseJump(a_playerTurn, m_activeX + 2, m_activeY + 2);
+						break;
+					case DOWNLEFT:
+						ChooseJump(a_playerTurn, m_activeX - 2, m_activeY - 2);
+						break;
+					case DOWNRIGHT:
+						ChooseJump(a_playerTurn, m_activeX + 2, m_activeY - 2);
+						break;
+					default:
+						break;
+					}
+				}
+			}
+			
 			if (m_playerTurn == BLACK)
 			{
 				m_playerTurn = WHITE;
@@ -205,9 +382,7 @@ void CheckersController::ChooseMove(Colour a_playerTurn)
 		{
 			break;
 		}
-		
 	}
-
 }
 
 void CheckersController::Draw(float deltaTime)
