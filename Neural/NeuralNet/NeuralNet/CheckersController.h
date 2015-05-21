@@ -1,5 +1,6 @@
 #pragma once
 #include "Checkers.h"
+#include "MCTS.h"
 #include <map>
 
 using namespace CheckersGame;
@@ -36,6 +37,8 @@ private:
 
 	Colour m_playerTurn = WHITE;
 
+	MCTS* m_ai;
+
 public:
 	CheckersController();
 	~CheckersController();
@@ -54,5 +57,7 @@ public:
 	void ChooseMove(Colour a_playerTurn);
 
 	void ChooseJump(Colour a_playerTurn, uint xPos, uint yPos);
+
+	void AIturn();
 
 };

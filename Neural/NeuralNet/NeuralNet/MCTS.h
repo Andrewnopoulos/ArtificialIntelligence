@@ -13,7 +13,7 @@ public:
 
 	virtual ~MCTS(){}
 
-	Movement MakeDecision(Board& a_board);
+	Movement MakeDecision(const Board& a_board);
 
 private:
 	// number of times it wil simulate a game

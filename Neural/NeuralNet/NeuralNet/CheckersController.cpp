@@ -1,4 +1,5 @@
 #include "CheckersController.h"
+#include "utility.h"
 #include <WinUser.h>
 #include <iostream>
 
@@ -7,6 +8,8 @@ using namespace CheckersGame;
 CheckersController::CheckersController()
 {
 	m_game = new Checkers();
+
+	m_ai = new MCTS(MONTECARLOPLAYOUTS, BLACK);
 
 	m_keystates[VK_A] = 0;
 	m_keystates[VK_S] = 0;
@@ -24,6 +27,7 @@ CheckersController::CheckersController()
 CheckersController::~CheckersController()
 {
 	delete m_game;
+	delete m_ai;
 
 	drawTimer = 0;
 }
@@ -58,6 +62,23 @@ bool CheckersController::GetKeyPressed(short a_key)
 	return GetKeyDown(a_key) && !previouslyHeld;
 }
 
+void CheckersController::AIturn()
+{
+	Board current = m_game->GetBoardState();
+	Movement aiChoice = m_ai->MakeDecision(current);
+	Checkers::RunMove(current, aiChoice);
+	m_game->SetBoardState(current);
+	
+	if (m_playerTurn == BLACK)
+	{
+		m_playerTurn = WHITE;
+	}
+	else if (m_playerTurn == WHITE)
+	{
+		m_playerTurn = BLACK;
+	}
+}
+
 void CheckersController::Update(float deltaTime)
 {
 	Colour gameOver = m_game->GameOver();
@@ -81,39 +102,47 @@ void CheckersController::Update(float deltaTime)
 		m_game->ResetBoard();
 	}
 
-	UpdateKeyboardInput();
+	if (m_playerTurn == WHITE)
+	{
+		UpdateKeyboardInput();
 
-	Colour turn = m_game->GetPosition(m_activeX, m_activeY);
+		Colour turn = m_game->GetPosition(m_activeX, m_activeY);
 
-	if (GetKeyPressed(VK_A) && m_activeX > 0)
-	{
-		m_activeX--;
-		system("cls");
-		turn = m_game->DrawBoard(m_activeX, m_activeY);
-	}
-	if (GetKeyPressed(VK_W) && m_activeY < 7)
-	{
-		m_activeY++;
-		system("cls");
-		turn = m_game->DrawBoard(m_activeX, m_activeY);
-	}
-	if (GetKeyPressed(VK_S) && m_activeY > 0)
-	{
-		m_activeY--;
-		system("cls");
-		turn = m_game->DrawBoard(m_activeX, m_activeY);
-	}
-	if (GetKeyPressed(VK_D) && m_activeX < 7)
-	{
-		m_activeX++;
-		system("cls");
-		turn = m_game->DrawBoard(m_activeX, m_activeY);
-	}
+		if (GetKeyPressed(VK_A) && m_activeX > 0)
+		{
+			m_activeX--;
+			system("cls");
+			turn = m_game->DrawBoard(m_activeX, m_activeY);
+		}
+		if (GetKeyPressed(VK_W) && m_activeY < 7)
+		{
+			m_activeY++;
+			system("cls");
+			turn = m_game->DrawBoard(m_activeX, m_activeY);
+		}
+		if (GetKeyPressed(VK_S) && m_activeY > 0)
+		{
+			m_activeY--;
+			system("cls");
+			turn = m_game->DrawBoard(m_activeX, m_activeY);
+		}
+		if (GetKeyPressed(VK_D) && m_activeX < 7)
+		{
+			m_activeX++;
+			system("cls");
+			turn = m_game->DrawBoard(m_activeX, m_activeY);
+		}
 
-	if (GetKeyPressed(VK_RETURN) && turn == m_playerTurn)
-	{
-		ChooseMove(turn);
+		if (GetKeyPressed(VK_RETURN) && turn == m_playerTurn)
+		{
+			ChooseMove(turn);
+		}
 	}
+	else
+	{
+		AIturn();
+	}
+	
 }
 
 // checks if any possible jumps and forces the player to take one
