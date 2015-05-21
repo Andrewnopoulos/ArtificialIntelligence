@@ -68,6 +68,28 @@ namespace CheckersGame
 		DOWNRIGHT = -4
 	};
 
+	enum MoveType
+	{
+		MOVE = 0,
+		JUMP = 1
+	};
+
+	struct Movement
+	{
+		uint xPos;
+		uint yPos;
+		Direction m_direction;
+		MoveType m_move;
+
+		Movement(uint a_xpos, uint a_ypos, Direction a_direction, MoveType a_move)
+		{
+			xPos = a_xpos;
+			yPos = a_ypos;
+			m_direction = a_direction;
+			m_move = a_move;
+		}
+	};
+
 	static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	class Checkers
@@ -123,6 +145,9 @@ namespace CheckersGame
 
 		bool IsKing(uint xPos, uint yPos);
 		static bool IsKing(Board& a_board, uint xPos, uint yPos);
+
+		std::vector<Movement> GetValidMoves(Colour a_playerTurn);
+		static std::vector<Movement> GetValidMoves(Board& a_board, Colour a_playerTurn);
 
 		Colour GameOver();
 		static Colour GameOver(Board& a_board);

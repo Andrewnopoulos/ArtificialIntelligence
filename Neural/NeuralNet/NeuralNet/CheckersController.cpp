@@ -236,7 +236,7 @@ void CheckersController::ChooseMove(Colour a_playerTurn)
 	std::vector<Board> potentialTurns;
 	std::vector<Board> potentialJumps;
 
-	std::vector<Move> potentialMoves;
+	std::vector<Movement> potentialMoves;
 
 	bool validJumps = m_game->ValidJumpExists(a_playerTurn);
 
@@ -269,28 +269,28 @@ void CheckersController::ChooseMove(Colour a_playerTurn)
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, UPLEFT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(m_activeX, m_activeY, UPLEFT, JUMP));
+		potentialMoves.push_back(Movement(m_activeX, m_activeY, UPLEFT, JUMP));
 	}
 	if (m_game->isValidJump(m_activeX, m_activeY, Direction::UPRIGHT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, UPRIGHT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(m_activeX, m_activeY, UPRIGHT, JUMP));
+		potentialMoves.push_back(Movement(m_activeX, m_activeY, UPRIGHT, JUMP));
 	}
 	if (m_game->isValidJump(m_activeX, m_activeY, Direction::DOWNLEFT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, DOWNLEFT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(m_activeX, m_activeY, DOWNLEFT, JUMP));
+		potentialMoves.push_back(Movement(m_activeX, m_activeY, DOWNLEFT, JUMP));
 	}
 	if (m_game->isValidJump(m_activeX, m_activeY, Direction::DOWNRIGHT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, m_activeX, m_activeY, DOWNRIGHT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(m_activeX, m_activeY, DOWNRIGHT, JUMP));
+		potentialMoves.push_back(Movement(m_activeX, m_activeY, DOWNRIGHT, JUMP));
 	}
 	// potentialTurns now holds a series of potential destination boards
 	// use A and D to cycle between them
@@ -343,7 +343,7 @@ void CheckersController::ChooseMove(Colour a_playerTurn)
 
 			if (potentialJumps.size() != 0)
 			{
-				Move selected = potentialMoves[selection];
+				Movement selected = potentialMoves[selection];
 
 				if (selected.m_move == MoveType::JUMP)
 				{

@@ -211,6 +211,62 @@ bool Checkers::isValidJump(Board& a_board, uint xPos, uint yPos, Direction a_dir
 	// check if destination square is empty and valid - done
 }
 
+std::vector<Movement> Checkers::GetValidMoves(Colour a_playerTurn)
+{
+	return GetValidMoves(m_board, a_playerTurn);
+}
+
+std::vector<Movement> Checkers::GetValidMoves(Board& a_board, Colour a_playerTurn)
+{
+	std::vector<Movement> possibleMoves;
+
+	bool canJump = ValidJumpExists(a_board, a_playerTurn);
+
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			if (GetPosition(a_board, x, y) == a_playerTurn)
+			{
+				if (isValidMove(a_board, x, y, UPLEFT) && !canJump)
+				{
+					possibleMoves.push_back(Movement(x, y, UPLEFT, MoveType::MOVE));
+				}
+				if (isValidMove(a_board, x, y, UPRIGHT) && !canJump)
+				{
+					possibleMoves.push_back(Movement(x, y, UPRIGHT, MoveType::MOVE));
+				}
+				if (isValidMove(a_board, x, y, DOWNLEFT) && !canJump)
+				{
+					possibleMoves.push_back(Movement(x, y, DOWNLEFT, MoveType::MOVE));
+				}
+				if (isValidMove(a_board, x, y, DOWNRIGHT) && !canJump)
+				{
+					possibleMoves.push_back(Movement(x, y, DOWNRIGHT, MoveType::MOVE));
+				}
+				if (isValidJump(a_board, x, y, UPLEFT))
+				{
+					possibleMoves.push_back(Movement(x, y, UPLEFT, MoveType::JUMP));
+				}
+				if (isValidJump(a_board, x, y, UPRIGHT))
+				{
+					possibleMoves.push_back(Movement(x, y, UPRIGHT, MoveType::JUMP));
+				}
+				if (isValidJump(a_board, x, y, DOWNLEFT))
+				{
+					possibleMoves.push_back(Movement(x, y, DOWNLEFT, MoveType::JUMP));
+				}
+				if (isValidJump(a_board, x, y, DOWNRIGHT))
+				{
+					possibleMoves.push_back(Movement(x, y, DOWNRIGHT, MoveType::JUMP));
+				}
+			}
+		}
+	}
+
+	return possibleMoves;
+}
+
 bool Checkers::ValidJumpExists(Colour a_colour)
 {
 	return ValidJumpExists(m_board, a_colour);

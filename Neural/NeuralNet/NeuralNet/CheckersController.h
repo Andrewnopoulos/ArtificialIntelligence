@@ -21,28 +21,6 @@ static short KeyList[NUMBEROFKEYS]
 	VK_ESCAPE
 };
 
-enum MoveType
-{
-	MOVE = 0,
-	JUMP = 1
-};
-
-struct Move
-{
-	uint xPos;
-	uint yPos;
-	Direction m_direction;
-	MoveType m_move;
-
-	Move(uint a_xpos, uint a_ypos, Direction a_direction, MoveType a_move)
-	{
-		xPos = a_xpos;
-		yPos = a_ypos;
-		m_direction = a_direction;
-		m_move = a_move;
-	}
-};
-
 class CheckersController
 {
 private:
