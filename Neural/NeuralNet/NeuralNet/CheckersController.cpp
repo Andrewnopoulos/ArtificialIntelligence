@@ -120,7 +120,7 @@ void CheckersController::Update(float deltaTime)
 void CheckersController::ChooseJump(Colour a_playerTurn, uint xPos, uint yPos)
 {
 	std::vector<Board> potentialJumps;
-	std::vector<Move> potentialMoves;
+	std::vector<Movement> potentialMoves;
 
 	bool validJumps = m_game->ValidJumpExists(a_playerTurn);
 
@@ -134,28 +134,28 @@ void CheckersController::ChooseJump(Colour a_playerTurn, uint xPos, uint yPos)
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, xPos, yPos, UPLEFT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(xPos, yPos, UPLEFT, JUMP));
+		potentialMoves.push_back(Movement(xPos, yPos, UPLEFT, JUMP));
 	}
 	if (m_game->isValidJump(xPos, yPos, Direction::UPRIGHT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, xPos, yPos, UPRIGHT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(xPos, yPos, UPRIGHT, JUMP));
+		potentialMoves.push_back(Movement(xPos, yPos, UPRIGHT, JUMP));
 	}
 	if (m_game->isValidJump(xPos, yPos, Direction::DOWNLEFT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, xPos, yPos, DOWNLEFT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(xPos, yPos, DOWNLEFT, JUMP));
+		potentialMoves.push_back(Movement(xPos, yPos, DOWNLEFT, JUMP));
 	}
 	if (m_game->isValidJump(xPos, yPos, Direction::DOWNRIGHT))
 	{
 		Board newBoard = m_game->GetBoardState();
 		m_game->Jump(newBoard, xPos, yPos, DOWNRIGHT);
 		potentialJumps.push_back(newBoard);
-		potentialMoves.push_back(Move(xPos, yPos, DOWNRIGHT, JUMP));
+		potentialMoves.push_back(Movement(xPos, yPos, DOWNRIGHT, JUMP));
 	}
 
 	int selection = 0;
@@ -199,7 +199,7 @@ void CheckersController::ChooseJump(Colour a_playerTurn, uint xPos, uint yPos)
 		{
 			m_game->SetBoardState(potentialJumps[selection]);
 
-			Move selected = potentialMoves[selection];
+			Movement selected = potentialMoves[selection];
 
 			if (selected.m_move == MoveType::JUMP)
 			{

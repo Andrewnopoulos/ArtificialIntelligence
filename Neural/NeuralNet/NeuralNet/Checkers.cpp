@@ -211,6 +211,21 @@ bool Checkers::isValidJump(Board& a_board, uint xPos, uint yPos, Direction a_dir
 	// check if destination square is empty and valid - done
 }
 
+void Checkers::RunMove(Board& a_board, Movement a_movement)
+{
+	switch (a_movement.m_move)
+	{
+	case JUMP:
+		Jump(a_board, a_movement.xPos, a_movement.yPos, a_movement.m_direction);
+		break;
+	case MOVE:
+		Move(a_board, a_movement.xPos, a_movement.yPos, a_movement.m_direction);
+		break;
+	default:
+		break;
+	}
+}
+
 std::vector<Movement> Checkers::GetValidMoves(Colour a_playerTurn)
 {
 	return GetValidMoves(m_board, a_playerTurn);

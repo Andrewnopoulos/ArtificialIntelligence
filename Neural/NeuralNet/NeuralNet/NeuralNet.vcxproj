@@ -86,6 +86,7 @@
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GeneticAlg.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MCTS.cpp" />
     <ClCompile Include="NeuralNet.cpp" />
     <ClCompile Include="TicTacAI.cpp" />
     <ClCompile Include="Tictactoe.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="CheckersController.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GeneticAlg.h" />
+    <ClInclude Include="MCTS.h" />
     <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="TicTacAI.h" />
     <ClInclude Include="Tictactoe.h" />
