@@ -149,6 +149,9 @@ namespace CheckersGame
 		std::vector<Movement> GetValidMoves(Colour a_playerTurn);
 		static std::vector<Movement> GetValidMoves(Board& a_board, Colour a_playerTurn);
 
+		uint GetNumberOf(Colour a_piece);
+		static uint GetNumberOf(Board& a_board, Colour a_piece);
+
 		static void RunMove(Board& a_board, Movement a_move);
 
 		Colour GameOver();

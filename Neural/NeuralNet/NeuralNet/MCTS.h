@@ -19,4 +19,6 @@ private:
 	// number of times it wil simulate a game
 	int m_playouts;
 	Colour m_colour;
+
+	float EvaluateFitness(const Board& a_board);
 };

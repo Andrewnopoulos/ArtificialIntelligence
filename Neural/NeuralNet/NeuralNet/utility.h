@@ -17,7 +17,7 @@ const float DEFAULTCROSSOVERRATE = 0.7f;
 const uint DEFAULTPOPULATIONSIZE = 30;
 const uint DEFAULTITERATIONS = 1000;
 
-const uint MONTECARLOPLAYOUTS = 30;
+const uint MONTECARLOPLAYOUTS = 100;
 
 
 //returns a random integer between x and y
@@ -36,6 +36,20 @@ inline bool   RandBool()
 
 //returns a random float in the range -1 < n < 1
 inline double RandomClamped()	   { return RandFloat() - RandFloat(); }
+
+unsigned int BitCount(long long input)
+{
+	unsigned int count = 0;
+
+	while (input > 0)
+	{
+		if ((input & 1LL) == 1)
+			count++;
+		input >>= 1LL;
+	}
+
+	return count;
+}
 
 
 #endif

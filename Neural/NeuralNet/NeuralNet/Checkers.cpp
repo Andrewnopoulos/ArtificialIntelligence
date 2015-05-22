@@ -1,4 +1,5 @@
 #include "Checkers.h"
+#include "utility.h"
 #include <iostream>
 #include <bitset>
 #include <algorithm>
@@ -224,6 +225,16 @@ void Checkers::RunMove(Board& a_board, Movement a_movement)
 	default:
 		break;
 	}
+}
+
+uint Checkers::GetNumberOf(Colour a_piece)
+{
+	return GetNumberOf(m_board, a_piece);
+}
+
+uint Checkers::GetNumberOf(Board& a_board, Colour a_piece)
+{
+	return BitCount((a_piece == BLACK ? a_board.m_BlackPieces : a_board.m_WhitePieces));
 }
 
 std::vector<Movement> Checkers::GetValidMoves(Colour a_playerTurn)

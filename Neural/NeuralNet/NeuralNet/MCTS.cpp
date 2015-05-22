@@ -7,7 +7,7 @@ Movement MCTS::MakeDecision(const Board& a_board)
 	Board newBoard = a_board;
 	std::vector<Movement> possibleMovements = Checkers::GetValidMoves(newBoard, m_colour);
 
-	float bestFitness = 0;
+	float bestFitness = -999;
 	uint bestMoveIndex = -1;
 
 	float fitnessValue;
@@ -18,6 +18,8 @@ Movement MCTS::MakeDecision(const Board& a_board)
 		fitnessValue = 0;
 		Board nextBoard = newBoard;
 		Checkers::RunMove(nextBoard, possibleMovements[i]);
+
+		//fitnessValue += EvaluateFitness(nextBoard);
 		
 		// play a number of simulated games
 		for (int j = 0; j < m_playouts; j++)
@@ -66,6 +68,8 @@ Movement MCTS::MakeDecision(const Board& a_board)
 			}
 		}
 
+		fitnessValue /= playouts;
+
 		if (fitnessValue >= bestFitness)
 		{
 			bestFitness = fitnessValue;
@@ -74,4 +78,17 @@ Movement MCTS::MakeDecision(const Board& a_board)
 	}
 
 	return possibleMovements[bestMoveIndex];
+}
+
+float MCTS::EvaluateFitness(const Board& a_board)
+{
+	Board testBoard = a_board;
+
+	Colour enemyColour = WHITE;
+	if (m_colour == WHITE)
+	{
+		enemyColour = BLACK;
+	}
+
+	
 }
