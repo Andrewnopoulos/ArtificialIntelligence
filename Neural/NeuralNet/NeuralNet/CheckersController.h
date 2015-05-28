@@ -59,5 +59,4 @@ public:
 	void ChooseJump(Colour a_playerTurn, uint xPos, uint yPos);
 
 	void AIturn();
-
 };

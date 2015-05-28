@@ -15,10 +15,9 @@ Movement MCTS::MakeDecision(const Board& a_board)
 
 	for (int i = 0; i < possibleMovements.size(); i++)
 	{
-		fitnessValue = 0;
 		Board nextBoard = newBoard;
 		Checkers::RunMove(nextBoard, possibleMovements[i]);
-
+		fitnessValue = 0;
 		//fitnessValue += EvaluateFitness(nextBoard);
 		
 		// play a number of simulated games
@@ -69,6 +68,7 @@ Movement MCTS::MakeDecision(const Board& a_board)
 		}
 
 		fitnessValue /= playouts;
+		fitnessValue *= EvaluateFitness(nextBoard);
 
 		if (fitnessValue >= bestFitness)
 		{
@@ -80,7 +80,7 @@ Movement MCTS::MakeDecision(const Board& a_board)
 	return possibleMovements[bestMoveIndex];
 }
 
-float MCTS::EvaluateFitness(const Board& a_board)
+float MCTS::EvaluateFitness(Board& a_board)
 {
 	Board testBoard = a_board;
 
@@ -90,5 +90,11 @@ float MCTS::EvaluateFitness(const Board& a_board)
 		enemyColour = BLACK;
 	}
 
-	
+	uint myPieces = Checkers::GetNumberOf(a_board, m_colour);
+	uint theirPieces = Checkers::GetNumberOf(a_board, enemyColour);
+	uint totalPieces = myPieces + theirPieces;
+
+	float fitness = (float) myPieces / (float) totalPieces;
+
+	return fitness;
 }

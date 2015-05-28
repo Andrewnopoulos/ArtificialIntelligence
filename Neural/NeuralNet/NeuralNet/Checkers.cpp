@@ -588,6 +588,50 @@ void Checkers::Jump(Board& a_board, uint xPos, uint yPos, Direction a_direction)
 	}
 }
 
+void Checkers::DoubleJump(uint xPos, uint yPos)
+{
+	DoubleJump(m_board, xPos, yPos);
+}
+
+void Checkers::DoubleJump(Board& a_board, uint xPos, uint yPos)
+{
+	uint nextXPos = 0;
+	uint nextYPos = 0;
+
+	// check possible jumps from (x, y)
+	// recurse
+
+	if (isValidJump(a_board, xPos, yPos, UPLEFT))
+	{
+		Jump(a_board, xPos, yPos, UPLEFT);
+		nextXPos = xPos - 2;
+		nextYPos = yPos + 2;
+		DoubleJump(a_board, nextXPos, nextYPos);
+	}
+	else if (isValidJump(a_board, xPos, yPos, UPRIGHT))
+	{
+		Jump(a_board, xPos, yPos, UPRIGHT);
+		nextXPos = xPos + 2;
+		nextYPos = yPos + 2;
+		DoubleJump(a_board, nextXPos, nextYPos);
+	}
+	else if (isValidJump(a_board, xPos, yPos, DOWNLEFT))
+	{
+		Jump(a_board, xPos, yPos, DOWNLEFT);
+		nextXPos = xPos - 2;
+		nextYPos = yPos - 2;
+		DoubleJump(a_board, nextXPos, nextYPos);
+	}
+	else if (isValidJump(a_board, xPos, yPos, DOWNRIGHT))
+	{
+		Jump(a_board, xPos, yPos, DOWNRIGHT);
+		nextXPos = xPos + 2;
+		nextYPos = yPos - 2;
+		DoubleJump(a_board, nextXPos, nextYPos);
+	}
+
+}
+
 Colour Checkers::DrawBoard(uint xPos, uint yPos, bool showMoves, bool showJumps)
 {
 	return DrawBoard(m_board, xPos, yPos, showMoves, showJumps);

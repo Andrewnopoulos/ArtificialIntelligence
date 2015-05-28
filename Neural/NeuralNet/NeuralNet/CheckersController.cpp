@@ -67,6 +67,37 @@ void CheckersController::AIturn()
 	Board current = m_game->GetBoardState();
 	Movement aiChoice = m_ai->MakeDecision(current);
 	Checkers::RunMove(current, aiChoice);
+	
+	// double jump handling
+	if (aiChoice.m_move == JUMP) // if it was a jump
+	{
+		uint xPos = aiChoice.xPos; // check the choice location
+		uint yPos = aiChoice.yPos;
+
+		switch (aiChoice.m_direction)
+		{
+		case UPLEFT:
+			xPos -= 2;
+			yPos += 2;
+			break;
+		case UPRIGHT:
+			xPos += 2;
+			yPos += 2;
+			break;
+		case DOWNLEFT:
+			xPos -= 2;
+			yPos -= 2;
+			break;
+		case DOWNRIGHT:
+			xPos += 2;
+			yPos -= 2;
+			break;
+		default:
+			break;
+		}
+		Checkers::DoubleJump(current, xPos, yPos); // recursive jump
+	}
+
 	m_game->SetBoardState(current);
 	
 	if (m_playerTurn == BLACK)

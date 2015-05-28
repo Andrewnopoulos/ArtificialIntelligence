@@ -20,5 +20,5 @@ private:
 	int m_playouts;
 	Colour m_colour;
 
-	float EvaluateFitness(const Board& a_board);
+	float EvaluateFitness(Board& a_board);
 };

@@ -146,6 +146,9 @@ namespace CheckersGame
 		bool IsKing(uint xPos, uint yPos);
 		static bool IsKing(Board& a_board, uint xPos, uint yPos);
 
+		void DoubleJump(uint xPos, uint yPos);
+		static void DoubleJump(Board& a_board, uint xPos, uint yPos);
+
 		std::vector<Movement> GetValidMoves(Colour a_playerTurn);
 		static std::vector<Movement> GetValidMoves(Board& a_board, Colour a_playerTurn);
 
