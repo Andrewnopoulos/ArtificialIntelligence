@@ -34,7 +34,7 @@ Movement MCTS::MakeDecision(const Board& a_board)
 			}
 
 			// play the game all the way through
-			while (!Checkers::GameOver(tempBoard))
+			for (int i = 0; i < DEPTH; i++)
 			{
 
 				std::vector<Movement> moves = Checkers::GetValidMoves(tempBoard, turn);
@@ -60,11 +60,8 @@ Movement MCTS::MakeDecision(const Board& a_board)
 					turn = WHITE;
 				}
 			}
-
-			if (Checkers::GameOver(tempBoard) == m_colour)
-			{
-				fitnessValue++;
-			}
+			
+			fitnessValue += EvaluateFitness(tempBoard);
 		}
 
 		fitnessValue /= playouts;
