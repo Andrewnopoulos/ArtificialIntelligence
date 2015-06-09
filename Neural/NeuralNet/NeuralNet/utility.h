@@ -17,8 +17,8 @@ const float DEFAULTCROSSOVERRATE = 0.7f;
 const uint DEFAULTPOPULATIONSIZE = 30;
 const uint DEFAULTITERATIONS = 1000;
 
-const uint MONTECARLOPLAYOUTS = 100;
-const uint DEPTH = 15;
+const uint MONTECARLOPLAYOUTS = 80;
+const uint DEPTH = 10;
 
 
 //returns a random integer between x and y

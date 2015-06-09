@@ -33,7 +33,7 @@ Movement MCTS::MakeDecision(const Board& a_board)
 				turn = WHITE;
 			}
 
-			// play the game all the way through
+			// play the game to a certain depth
 			for (int i = 0; i < DEPTH; i++)
 			{
 
